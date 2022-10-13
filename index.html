@@ -32,10 +32,10 @@
       
       <div class="music-player">
 
-        <img class="disc-playing" src="assets/images/piano-forte-scandal.png" alt="disc">
-        <p class="pa">Piano Forte Scandal</p>
-        <p class="pa">Oster Project</p>
-        <audio src="" controls></audio>
+        <img id="discBanner" class="disc-playing" src="assets/images/piano-forte-scandal.png" alt="disc">
+        <p id="songTitle" class="pa">Piano Forte Scandal</p>
+        <p id="authorName" class="pa">Oster Project</p>
+        <audio id="player" controls src="assets/music/piano-forte-scandal.mpeg"></audio>
       </div>
 
     </aside>
@@ -56,50 +56,17 @@
     <hr>
     <section class="second-section">
 
-      <table class="table-grid">
+      <table id="table-grid" class="table-grid">
         <thead>
           <tr>
             <th>#</th>
             <th>Titulo</th>
             <th>Autor</th>
-            <th>Tempo</th>
+            <th>Cantor</th>
+            <th>Duração</th>
           </tr>
         </thead>
-        <tbody>
-
-          <tr>
-            <td>1</td>
-            <td>Piano Forte Scandal</td>
-            <td>Oster Project</td>
-            <td>3:41</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Envy cat Walk</td>
-            <td>Tohma</td>
-            <td>4:11</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Nisoku Hokou</td>
-            <td>Deco*27</td>
-            <td>4:11</td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>Narisumashi Genga</td>
-            <td>Tohma</td>
-            <td>4:11</td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>Envy cat Walk</td>
-            <td>Tohma</td>
-          <td>4:11</td>
-          
-        </tbody>
-        </tr>
-        
+        <tbody></tbody>
       </table>
         
     </section>
@@ -107,6 +74,7 @@
   </main>
 
   <footer class="footer"></footer>
-
+  <script src="assets/js/controller/PlayerController.js"></script>
+  <script src="assets/js/index.js"></script>
 </body>
 </html>

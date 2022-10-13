@@ -97,3 +97,7 @@ body{
     color: #FFF;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
+
+.song-selected{
+    background-color: rgb(110, 108, 108);
+}
