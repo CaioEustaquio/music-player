@@ -1,0 +1,99 @@
+body{
+    padding: 0;
+    margin: 0;
+    background-color: rgb(28, 31, 31);
+}
+
+.menu{
+    width: 300px;
+    height: 100%;
+    position: absolute;
+    background-color: rgb(15, 14, 15);
+    padding: 0 10px 0 10px;
+}
+
+.menu-itens{
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+}
+
+.menu-itens a{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 26px;
+    text-decoration: none;
+    color: #FFF;
+    margin-bottom: 20px;
+}
+
+.music-player{
+    display: flex;
+    flex-direction: column;
+    margin-top: 100px;
+    align-items: center;
+}
+
+.disc-playing{
+    height: 250px;
+    width: 250px;
+    border-radius: 10px;
+}
+
+.first-section{
+    display: flex;
+}
+
+.playlist-img{
+    padding: 0;
+    margin: 0;
+    height: 300px;
+    width: 300px;
+    background: linear-gradient(68.15deg, #283131 16.62%, #1f8860 85.61%);
+}
+
+.main-content{
+    height: 100%;
+    margin-left: 350px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    padding: 10px;
+}
+.main-title{
+    margin: 0px;
+    font-size: 100px;
+    color: #FFF;
+    margin-top: 80px;
+    margin-left: 10px;
+}
+
+.table-grid{
+    width: 90%;
+}
+
+.table-grid {
+    width: 90%;
+}
+
+.table-grid tr{
+    text-align: left;
+    width: 30px;
+    height: 60px;
+    color: #FFF;
+    border: 5px solid;
+    border-radius: 50px;
+}
+
+.table-grid tr:hover{
+    background-color: rgb(129, 129, 129);
+    cursor: pointer;
+}
+
+.table-grid tr, td{
+    user-select: none;
+}
+
+.pa{
+    margin: 5px;
+    text-align: center;
+    color: #FFF;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
