@@ -1,4 +1,4 @@
-let data = [
+const data = [
     {
         id: 1,
         title:"Piano Forte Scandal",
@@ -46,4 +46,4 @@ let data = [
     }
 ]
 
-let controller = new PlayerController('player', 'table-grid', data);
+let controller = new PlayerController('player', 'table-grid', 'grid-mobile', data);

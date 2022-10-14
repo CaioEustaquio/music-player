@@ -12,6 +12,27 @@ body{
     padding: 0 10px 0 10px;
 }
 
+/* VERIFICAR SE É POSSÍVEL MELHORAR  */
+@media screen and (min-width: 1966px) and  (max-width: 4158px){
+    .grid-mobile {
+        display: none;
+    }
+}
+@media screen and (min-width: 1029px) and  (max-width: 1966px){
+    .grid-mobile {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1030px) {
+    .menu {
+        display: none;
+    }
+    .grid-mobile {
+        display: none;
+    }
+}
+
 .menu-itens{
     display: flex;
     flex-direction: column;
@@ -34,8 +55,8 @@ body{
 }
 
 .disc-playing{
-    height: 250px;
-    width: 250px;
+    height: 200px;
+    width: 200px;
     border-radius: 10px;
 }
 
@@ -57,20 +78,22 @@ body{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     padding: 10px;
 }
+
+@media screen and (max-width: 1030px) {
+    .main-content {
+        margin: 0;
+    }
+}
+
 .main-title{
-    margin: 0px;
     font-size: 100px;
     color: #FFF;
     margin-top: 80px;
     margin-left: 10px;
 }
 
-.table-grid{
-    width: 90%;
-}
-
 .table-grid {
-    width: 90%;
+    width: 100%;
 }
 
 .table-grid tr{
@@ -89,6 +112,43 @@ body{
 
 .table-grid tr, td{
     user-select: none;
+}
+
+.grid-mobile{
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.song-grid-mobile{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.song-grid-mobile img{
+    width: 80px;
+    height: 80px;
+}
+
+.song-grid-mobile:hover{
+    background-color: rgb(129, 129, 129);
+    cursor: pointer;
+}
+
+@media screen and (max-width: 675px){
+    .table-grid{
+        display: none;
+    }
+    .grid-mobile{
+        display: flex;
+    }
+    .playlist-img {
+        display: none;
+    }    
+    .main-title{
+        margin: 0;
+        font-size: 80px;
+    }
 }
 
 .pa{
