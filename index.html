@@ -24,9 +24,9 @@
           <i class="fa fa-search"></i>
           Buscar
         </a>
-        <a href="#">
+        <a href="">
           <i class="fa">&#xf07c;</i>
-          Sua biblioteca
+          Biblioteca
         </a>
       </nav>
       
@@ -50,33 +50,57 @@
     <section class="first-section">
 
       <img class="playlist-img" src="assets/images/disc.png" alt="disc">
-      <h1 class="main-title">Músicas</h1>
+      <h1 class="main-title">Biblioteca</h1>
 
     </section>
 
     <hr>
     <section class="second-section">
 
-      <table id="table-grid" class="table-grid">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Titulo</th>
-            <th>Autor</th>
-            <th>Cantor</th>
-            <th>Duração</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <div class="table-container">
+       
+        <table id="table-grid" class="table-grid">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Titulo</th>
+              <th>Autor</th>
+              <th>Cantor</th>
+              <th>Duração</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
 
       <div id="grid-mobile" class="grid-mobile"></div>
         
     </section>
 
+    
   </main>
+  
+  <footer class="footer">
+    <div class="section-footer-mobile">
+      <a href="#">
+        <i class="fa">&#xf015;</i>
+        Início
+      </a>
+      <a href="#">
+        <i class="fa fa-search"></i>
+        Buscar
+      </a>
+      <a href="">
+        <i class="fa">&#xf07c;</i>
+        Biblioteca
+      </a>
+    </div>
+  </footer>
 
-  <footer class="footer"></footer>
+  <!-- <div class="section-player">
+    <p>Player</p>
+  </div> -->
+
   <script src="assets/js/controller/PlayerController.js"></script>
   <script src="assets/js/index.js"></script>
 </body>
