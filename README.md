@@ -1,2 +1,2 @@
 # music-player
-A simple song's player
+A simple music player inspired by spotify
