@@ -46,4 +46,4 @@ const data = [
     }
 ]
 
-let controller = new PlayerController('player', 'table-grid', 'grid-mobile', data);
+let controller = new PlayerController('player', 'player-container', 'table-grid', 'grid-mobile', data);
