@@ -5,8 +5,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Music player</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
+  <script src="https://kit.fontawesome.com/d1c5aef1a3.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -17,28 +17,24 @@
       <nav class="menu-itens">
 
         <a href="#">
-          <i class="fa">&#xf015;</i>
+          <i class="fa-solid fa-house"></i>
           Início
         </a>
         <a href="#">
-          <i class="fa fa-search"></i>
+          <i class="fa-solid fa-magnifying-glass"></i>
           Buscar
         </a>
         <a href="">
-          <i class="fa">&#xf07c;</i>
+          <i class="fa-solid fa-folder"></i>
           Biblioteca
         </a>
       </nav>
+
       
       <div class="music-player">
 
-        <img id="discBanner" class="disc-playing" src="assets/images/piano-forte-scandal.png" alt="disc">
-        <p class="pa songDescription">
-          Piano Forte Scandal
-          <br>
-          Oster Project
-        </p>
-        <audio id="player" controls src="assets/music/piano-forte-scandal.mpeg"></audio>
+        <img id="discBanner" class="disc-playing" alt="disc" draggable="false">
+        <audio id="player" controls preload="metadata"></audio>
       </div>
 
     </aside>
@@ -73,35 +69,93 @@
         </table>
       </div>
 
-      <div id="grid-mobile" class="grid-mobile"></div>
+      <div class="grid-mobile-container">
+        <div id="grid-mobile" class="grid-mobile"></div>
+      </div>
         
     </section>
 
     
   </main>
   
+  <div id="player-container" class="player-container">
+
+    <div class="controls">
+    
+      <div class="section-left">
+
+        <p class="pa songDescription">
+          Piano Forte Scandal
+          <br>
+          <span>Oster Project</span>
+        </p>
+      </div>
+
+      <div class="section-middle">
+        <a href="#">
+          <i id="btn-random-song" style='font-size:16px' class='fa'>&#xf074;</i>
+        </a>
+        <a href="#">
+          <i id="btn-step-backward" style='font-size:16px' class='fa'>&#xf048;</i>
+        </a>
+        <a href="#">
+          <i id="btn-play" style='font-size:36px;' class='fa '>&#xf144;</i>
+          <i id="btn-pause" style='font-size:36px; display: none;' class='fa '>&#xf28b;</i>
+        </a>
+        <a href="#">
+          <i id="btn-step-foward" style='font-size:16px' class='fa'>	&#xf051;</i>
+        </a>
+        <a href="#">
+          <i id="btn-repeat-song" style='font-size:16px;' class='fa active'>&#xf021;</i>
+        </a>
+        <a href="#">
+          <!-- <i id="btn-repeat-song" style='font-size:16px; color: aquamarine;' class='fa'>&#xf021;</i> -->
+        </a>
+      </div>
+
+      <div class="section-right">
+        <i id="vol-icon" style='font-size:24px' class='fa'>&#xf027;</i>
+        <div class="volume-bar-container">
+          <div class="volume-bar">
+            <div class="volume-status"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="song-bar-container">
+        <p id="song-progression" class="pa">0:00</p>
+        <div class="song-progress-bar">
+          <div class="song-progress"></div>
+        </div>
+        <p id="song-lenght" class="pa"></p>
+    </div>
+
+  </div>
+
   <footer class="footer">
     <div class="section-footer-mobile">
       <a href="#">
-        <i class="fa">&#xf015;</i>
+        <i class="fa-solid fa-house"></i>
         Início
       </a>
       <a href="#">
-        <i class="fa fa-search"></i>
+        <i class="fa-solid fa-magnifying-glass"></i>
         Buscar
       </a>
       <a href="">
-        <i class="fa">&#xf07c;</i>
+        <i class="fa-solid fa-folder"></i>
         Biblioteca
       </a>
     </div>
   </footer>
 
-  <!-- <div class="section-player">
-    <p>Player</p>
-  </div> -->
+
+  
 
   <script src="assets/js/controller/PlayerController.js"></script>
+  <script src="assets/js/class/Utils.js"></script>
   <script src="assets/js/index.js"></script>
 </body>
 </html>
