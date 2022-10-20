@@ -8,7 +8,6 @@ class PlayerController{
         this._mobileGridEl = document.getElementById(mobileGridEl);
         this._data = data;
         this._interval;
-        this._duration;
 
         this.init();
     }
@@ -47,12 +46,6 @@ class PlayerController{
     set interval(interval){
         this._interval = interval;
     }
-    get duration(){
-        return this._duration;
-    }
-    set duration(duration){
-        this._duration = duration;
-    }
 
     init(){
 
@@ -62,6 +55,7 @@ class PlayerController{
 
         this.playerUpdate();
         this.initControls();
+        this.addSongBarEvents();
     }
 
     render(){
@@ -212,6 +206,10 @@ class PlayerController{
 
     addPlayerEvents(){
 
+        this.playerEl.volume = 0.2;
+
+        let volumeBar = this._playerTemplateEl.querySelector('.volume-bar');
+
         this.playerEl.addEventListener('play', (e) =>{
 
             clearInterval(this._interval);
@@ -248,6 +246,35 @@ class PlayerController{
                 this.stepFoward();
 
             }          
+        });
+
+        volumeBar.addEventListener('click', (e) =>{
+
+            let maxVolume = 1.0;
+
+            let progress = parseInt(((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100);
+
+            e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
+
+            let volume = ((progress * maxVolume) / 100).toFixed(1);
+
+            this.playerEl.volume = volume;
+        });
+    }
+
+    addSongBarEvents(){
+
+        let songBar = this._playerTemplateEl.querySelector('.song-progress-bar');
+
+        songBar.addEventListener('click', (e) =>{
+
+            let progress = parseInt(((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100);
+
+            e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
+
+            let time = (progress * this.playerEl.duration) / 100;
+
+            this.playerEl.currentTime = time;
         });
     }
     
@@ -361,14 +388,9 @@ class PlayerController{
         }
     }
 
-    playerUpdate(e = null){
+    playerUpdate(){
 
-        let songProgression = this._playerTemplateEl.querySelector('#song-progression');
-
-        let currentMinute = Utils.toMinutes(this.playerEl.currentTime);
-        let currentSecond = Utils.toSeconds(currentMinute, this.playerEl.currentTime);
-
-        songProgression.innerHTML = `${currentMinute}:${Utils.padTo2Digits(currentSecond)}`;
+        this.updateProgress();
 
         let progressionBar = this._playerTemplateEl.querySelector('.song-progress');
 
@@ -379,7 +401,7 @@ class PlayerController{
             progressionBar.style.width = progress + '%';
         }
     }
-    
+
     setInterval(){
 
         this._interval = setInterval(() =>{
@@ -389,9 +411,14 @@ class PlayerController{
         }, 1000);
     }
 
-    getSongLenght(){
+    updateProgress(){
 
-        return this.playerEl.duration;
+        let songProgression = this._playerTemplateEl.querySelector('#song-progression');
+
+        let currentMinute = Utils.toMinutes(this.playerEl.currentTime);
+        let currentSecond = Utils.toSeconds(currentMinute, this.playerEl.currentTime);
+
+        songProgression.innerHTML = `${currentMinute}:${Utils.padTo2Digits(currentSecond)}`;
     }
 
     setSongLenght(){

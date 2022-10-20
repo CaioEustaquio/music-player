@@ -289,7 +289,7 @@ body{
 
 .section-left{
     position: fixed;
-    left: 2vw;
+    left: 10px;
     bottom: 30px;
     display: flex;
     justify-content: center;
@@ -343,11 +343,11 @@ body{
 	background: #000;
 	width: 80px;
 	height: 10px;
-	border-radius: 3px;
+	border-radius: 5px;
 }
 
 .volume-status {
-	width: 25px;
+	width: 10px;
 	height: 10px;
 	border-radius: 5px;
 	background: #1f8860;
@@ -372,19 +372,22 @@ i.fa{
     .song-bar-container{
         width: 70%;
         bottom: 90px;
-        left: 2%;
+        left: 10px;
     }
 }
 
 .song-progress-bar {
 	background: #000;
-	width: 70%;
+	width: 500px;
 	height: 10px;
 	border-radius: 5px;
 }
 
 .song-progress {
-	width: 0;
+    min-width: 0;
+    max-width: 500px;
+	width: 0px;
+	/* width: 394px; */
 	height: 10px;
 	border-radius: 5px;
 	background: #1f8860;
