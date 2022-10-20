@@ -8,6 +8,7 @@ class PlayerController{
         this._mobileGridEl = document.getElementById(mobileGridEl);
         this._data = data;
         this._interval;
+        this._duration;
 
         this.init();
     }
@@ -45,23 +46,27 @@ class PlayerController{
     }
     set interval(interval){
         this._interval = interval;
-    } 
+    }
+    get duration(){
+        return this._duration;
+    }
+    set duration(duration){
+        this._duration = duration;
+    }
 
     init(){
 
         this.render().then(() =>{
-
             this.addPlayerEvents();
         });
 
         this.playerUpdate();
-        // this.preparePlayer();
         this.initControls();
     }
 
     render(){
 
-        return new Promise((resolve, reject) =>{
+        return new Promise((resolve) =>{
 
             let tbody = this._tableEl.querySelector("tbody");
 
@@ -210,12 +215,7 @@ class PlayerController{
         this.playerEl.addEventListener('play', (e) =>{
 
             clearInterval(this._interval);
-
-            this._interval = setInterval(() =>{
-
-                this.playerUpdate();
-
-            }, 1000);
+            this.setInterval();
 
             this._playerTemplateEl.querySelector('#btn-pause').style.display = 'inline-block';     
             this._playerTemplateEl.querySelector('#btn-play').style.display = 'none';
@@ -231,14 +231,7 @@ class PlayerController{
 
         this.playerEl.addEventListener('loadedmetadata', (e) =>{
 
-
-            let songLenght = this._playerTemplateEl.querySelector('#song-lenght');
-
-            let durationMinute = Utils.toMinutes(this.playerEl.duration);
-            let durationSecond = Utils.toSeconds(durationMinute, this.playerEl.duration);
-    
-            songLenght.innerHTML = `${durationMinute}:${Utils.padTo2Digits(durationSecond)}`;
-
+            this.setSongLenght();
             this.playerUpdate();
         });
         
@@ -246,6 +239,15 @@ class PlayerController{
         this.playerEl.addEventListener('timeupdate', (e) =>{
             
             this.playerUpdate();
+        });
+        
+        this.playerEl.addEventListener('ended', (e) =>{
+            
+            if(!this.inLoop()){
+                
+                this.stepFoward();
+
+            }          
         });
     }
     
@@ -311,7 +313,7 @@ class PlayerController{
 
     enableRepeat(){
 
-        console.log(this)
+        console.log(this);
 
     }
 
@@ -359,7 +361,7 @@ class PlayerController{
         }
     }
 
-    playerUpdate(){
+    playerUpdate(e = null){
 
         let songProgression = this._playerTemplateEl.querySelector('#song-progression');
 
@@ -368,7 +370,37 @@ class PlayerController{
 
         songProgression.innerHTML = `${currentMinute}:${Utils.padTo2Digits(currentSecond)}`;
 
-        // let progressionBar = this._playerTemplateEl.querySelector('.song-progress');
+        let progressionBar = this._playerTemplateEl.querySelector('.song-progress');
 
+        if(this.playerEl.duration !== undefined){
+
+            let progress = parseInt((this.playerEl.currentTime / this.playerEl.duration) * 100);
+
+            progressionBar.style.width = progress + '%';
+        }
+    }
+    
+    setInterval(){
+
+        this._interval = setInterval(() =>{
+
+            this.playerUpdate();
+
+        }, 1000);
+    }
+
+    getSongLenght(){
+
+        return this.playerEl.duration;
+    }
+
+    setSongLenght(){
+
+        let songLenght = this._playerTemplateEl.querySelector('#song-lenght');
+
+        let durationMinute = Utils.toMinutes(this.playerEl.duration);
+        let durationSecond = Utils.toSeconds(durationMinute, this.playerEl.duration);
+
+        songLenght.innerHTML = `${durationMinute}:${Utils.padTo2Digits(durationSecond)}`;
     }
 }

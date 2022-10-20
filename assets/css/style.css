@@ -335,8 +335,7 @@ body{
 
 @media screen and (max-width: 768px){
     .section-right{
-        left: 80%;
-        bottom: 102px;
+        display: none;
     }
 }
 
@@ -371,6 +370,7 @@ i.fa{
 
 @media screen and (max-width: 768px){
     .song-bar-container{
+        width: 70%;
         bottom: 90px;
         left: 2%;
     }
@@ -380,11 +380,11 @@ i.fa{
 	background: #000;
 	width: 70%;
 	height: 10px;
-	border-radius: 3px;
+	border-radius: 5px;
 }
 
 .song-progress {
-	width: 70%;
+	width: 0;
 	height: 10px;
 	border-radius: 5px;
 	background: #1f8860;
