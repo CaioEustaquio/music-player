@@ -225,6 +225,7 @@ class PlayerController{
 
             this._playerTemplateEl.querySelector('#btn-play').style.display = 'inline-block';
             this._playerTemplateEl.querySelector('#btn-pause').style.display = 'none';
+            this.playerUpdate();
         });
 
         this.playerEl.addEventListener('loadedmetadata', (e) =>{
@@ -268,13 +269,19 @@ class PlayerController{
 
         songBar.addEventListener('click', (e) =>{
 
-            let progress = parseInt(((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100);
-
-            e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
+            let progress = ((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100;
 
             let time = (progress * this.playerEl.duration) / 100;
 
+            e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
+
             this.playerEl.currentTime = time;
+        });
+
+        songBar.addEventListener('drag', (e) =>{
+
+            console.log(e);
+
         });
     }
     
@@ -396,9 +403,10 @@ class PlayerController{
 
         if(this.playerEl.duration !== undefined){
 
-            let progress = parseInt((this.playerEl.currentTime / this.playerEl.duration) * 100);
+            let songProgress = (this.playerEl.currentTime / this.playerEl.duration) * 100;
+            let barWidth = progressionBar.parentElement.offsetWidth;
 
-            progressionBar.style.width = progress + '%';
+            progressionBar.style.width = ((songProgress * barWidth) / 100) + 'px';
         }
     }
 
