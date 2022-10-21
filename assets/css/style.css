@@ -1,3 +1,7 @@
+*{
+    user-select: none;
+}
+
 body{
     padding: 0;
     margin: 0;
@@ -32,7 +36,12 @@ body{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 26px;
     text-decoration: none;
+    color: #B0B0B0;
+}
+
+.menu-itens a:hover{
     color: #FFF;
+    transition: 0.50s;
 }
 
 .music-player{
@@ -141,10 +150,6 @@ body{
     cursor: pointer;
 }
 
-.table-grid tr, td{
-    user-select: none;
-}
-
 @media screen and (max-width: 768px){
     .table-grid{
         display: none;
@@ -244,7 +249,12 @@ body{
     font-size: 15px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     text-decoration: none;
+    color: #B0B0B0;
+}
+
+.section-footer-mobile a:hover{
     color: #FFF;
+    transition: 0.50s;
 }
 
 .pa{
@@ -309,10 +319,6 @@ body{
     display: flex;
     align-items: center;
     gap: 20px;
-}
-
-.section-middle a{
-    user-select: none;
 }
 
 @media screen and (max-width: 768px){
@@ -387,15 +393,7 @@ i.fa{
     min-width: 0;
     max-width: 500px;
 	width: 0px;
-	/* width: 394px; */
 	height: 10px;
 	border-radius: 5px;
 	background: #1f8860;
-	/* background: -webkit-linear-gradient(to right, #afafaf, #1f8860);
-	background: -o-linear-gradient(to right, #afafaf, #1f8860);
-	background: -moz-linear-gradient(to right, #afafaf, #1f8860);
-	background: -ms-linear-gradient(to right, #afafaf, #1f8860);
-	background: linear-gradient(to right, #afafaf, #1f8860); */
-	/* -webkit-transition: 600ms cubic-bezier(0.6, 0, 0.38, 1); */
-	/* -moz-transition: 600ms cubic-bezier(0.6, 0, 0.38, 1); */
 }
