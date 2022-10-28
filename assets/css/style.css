@@ -5,19 +5,20 @@
 body{
     padding: 0;
     margin: 0;
-    background-color: rgb(28, 31, 31);
+    background: rgb(24,24,24);
+    background: linear-gradient(0deg, rgba(24,24,24,1) 72%, rgba(39,177,124,1) 100%);
 }
 
 .menu{
     width: 300px;
     height: 100%;
-    position: absolute;
+    position: fixed;
     display: flex;
     flex-direction: column;
-    background-color: rgb(15, 14, 15);
+    background-color: rgb(0, 0, 0);
 }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1066px) {
     .menu {
         display: none;
     }
@@ -29,7 +30,7 @@ body{
     flex-grow: 2;
     display: flex;
     flex-direction: column;
-    gap: 20px 20px;
+    gap: 50px 20px;
 }
 
 .menu-itens a{
@@ -44,12 +45,23 @@ body{
     transition: 0.50s;
 }
 
-.music-player{
-    flex-grow: 2;
+.menu-options{
+    display: flex;
+    flex-direction: column;
+    gap: 15px 15px;
+}
+
+.user-options{
+    display: flex;
+    flex-direction: column;
+    gap: 15px 15px;
+}
+
+.disc-photo{
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px 10px;
+    margin-bottom: 110px;
 }
 
 .disc-playing{
@@ -60,6 +72,31 @@ body{
 
 .first-section{
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0 20px;
+}
+
+.playlist-data{
+    display: flex;
+    flex-direction: column;
+}
+
+.playlist-data h1{
+    font-size: 100px;
+    margin: 0;
+    color: #FFF;
+}
+
+@media screen and (max-width: 768px){
+    .first-section{
+        border-bottom: 2px solid rgb(149, 149, 149);
+    }
+    .playlist-data {
+        flex-direction: row;
+        align-items: baseline;
+        justify-content: space-between;
+    }
 }
 
 .playlist-img{
@@ -67,7 +104,6 @@ body{
     margin: 0;
     height: 300px;
     width: 300px;
-    background: linear-gradient(68.15deg, #283131 16.62%, #1f8860 85.61%);
 }
 
 @media screen and (max-width: 768px){
@@ -77,43 +113,36 @@ body{
 }
 
 .main-content{
-    height: 100%;
-    margin-left: 350px;
+    margin-left: 320px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     padding: 10px;
 }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1066px) {
     .main-content {
         margin: 0;
     }
 }
 
-.main-title{
-    font-size: 100px;
-    color: #FFF;
-    margin-top: 80px;
-    margin-left: 10px;
-}
-
 @media screen and (max-width: 768px){
-    .main-title{
-        margin: 0;
+    .playlist-data{
+        gap: 0 20px;
+    }
+    .playlist-data h1{
         font-size: 30px;
     }
 }
 
 .table-container{
-    height:285px;
-    overflow-y:auto;
+    height:100%;
+    margin-bottom: 15vh;
 }
 
 ::-webkit-scrollbar {
     width: 10px;
 }
 ::-webkit-scrollbar-track {
-    /* background: #f1f1f1;  */
-    border-radius: 10px;
+    background: rgb(24,24,24);; 
 }
 
 ::-webkit-scrollbar-thumb {
@@ -136,6 +165,17 @@ body{
     border-spacing: 0;
 }
 
+.table-grid thead{
+    top: 0;
+    position: sticky;
+    color: #888;
+    background-color: #181818;
+}
+
+.table-grid thead th{
+    border-bottom: 2px solid rgb(149, 149, 149);
+}
+
 .table-grid tr{
     text-align: left;
     width: 30px;
@@ -146,7 +186,7 @@ body{
 }
 
 .table-grid tr.data-row:hover{
-    background-color: rgb(129, 129, 129);
+    background-color: rgb(72, 72, 72);
     cursor: pointer;
 }
 
@@ -154,10 +194,14 @@ body{
     .table-grid{
         display: none;
     }
+    body{
+        background: rgb(24,24,24);
+    }
 }
 
 .grid-mobile-container{
-    height:450px;
+    padding-top: 10px;
+    height: 60vh;
     overflow-y:auto;    
 }
 
@@ -264,11 +308,15 @@ body{
 }
 
 .pa span{
-    color: #8a8a8a;    
+    color: #c0c0c0;    
 }
 
-.song-selected{
-    background-color: rgb(110, 108, 108);
+.song-playing{
+    color: #27b17c !important;
+}
+
+div.song-playing p{
+    color: #27b17c !important;
 }
 
 .player-container {
@@ -321,6 +369,11 @@ body{
     gap: 20px;
 }
 
+.section-middle i.active{
+    color: rgb(33, 211, 152);
+    transition: 0.5s;
+}
+
 @media screen and (max-width: 768px){
     .section-middle{
         bottom: 150px;
@@ -352,8 +405,10 @@ body{
 	border-radius: 5px;
 }
 
-.volume-status {
+.volume-progress {
 	width: 10px;
+    min-width: 0;
+    max-width: 80px;
 	height: 10px;
 	border-radius: 5px;
 	background: #1f8860;

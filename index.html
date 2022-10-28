@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv='cache-control' content='no-cache'> 
+  <meta http-equiv='expires' content='0'> 
+  <meta http-equiv='pragma' content='no-cache'>
   <title>Music player</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="https://kit.fontawesome.com/d1c5aef1a3.js" crossorigin="anonymous"></script>
@@ -16,24 +19,37 @@
 
       <nav class="menu-itens">
 
-        <a href="#">
-          <i class="fa-solid fa-house"></i>
-          Início
-        </a>
-        <a href="#">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          Buscar
-        </a>
-        <a href="">
-          <i class="fa-solid fa-folder"></i>
-          Biblioteca
-        </a>
+        <div class="menu-options">
+          <a href="#/">
+            <i class="fa-solid fa-house"></i>
+            Início
+          </a>
+          <a href="#/">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            Buscar
+          </a>
+          <a href="#/">
+            <i class="fa-solid fa-folder"></i>
+            Biblioteca
+          </a>
+        </div>
+
+        <div class="user-options">
+          <a href="#/">
+            <i class="fa-solid fa-plus"></i>
+            Criar playlist
+          </a>
+          <a href="#/">
+            <i class="fa-sharp fa-solid fa-heart" style="color: #27b17c;"></i>
+            Músicas Curtidas
+          </a>
+        </div>
       </nav>
 
       
-      <div class="music-player">
+      <div class="disc-photo">
 
-        <img id="discBanner" class="disc-playing" alt="disc" draggable="false">
+        <img id="discBanner" class="disc-playing" alt="song-disc" draggable="false">
         <audio id="player" preload="metadata"></audio>
       </div>
 
@@ -45,12 +61,14 @@
 
     <section class="first-section">
 
-      <img class="playlist-img" src="assets/images/disc.png" alt="disc">
-      <h1 class="main-title">Biblioteca</h1>
+      <img class="playlist-img" src="assets/images/disc.png" alt="playlist-disc">
+
+      <div class="playlist-data">
+        <h1>Biblioteca</h1>
+      </div>
 
     </section>
 
-    <hr>
     <section class="second-section">
 
       <div class="table-container">
@@ -92,24 +110,21 @@
       </div>
 
       <div class="section-middle">
-        <a href="#">
+        <a href="#/" title="Ativar a ordem aleatória">
           <i id="btn-random-song" style='font-size:16px' class='fa'>&#xf074;</i>
         </a>
-        <a href="#">
+        <a href="#/" title="Voltar">
           <i id="btn-step-backward" style='font-size:16px' class='fa'>&#xf048;</i>
         </a>
-        <a href="#">
-          <i id="btn-play" style='font-size:36px;' class='fa '>&#xf144;</i>
-          <i id="btn-pause" style='font-size:36px; display: none;' class='fa '>&#xf28b;</i>
+        <a href="#/">
+          <i id="btn-play" style='font-size:36px;' class='fa'>&#xf144;</i>
+          <i id="btn-pause" style='font-size:36px; display: none;' class='fa'>&#xf28b;</i>
         </a>
-        <a href="#">
+        <a href="#/" title="Avançar">
           <i id="btn-step-foward" style='font-size:16px' class='fa'>	&#xf051;</i>
         </a>
-        <a href="#">
-          <i id="btn-repeat-song" style='font-size:16px;' class='fa active'>&#xf021;</i>
-        </a>
-        <a href="#">
-          <!-- <i id="btn-repeat-song" style='font-size:16px; color: aquamarine;' class='fa'>&#xf021;</i> -->
+        <a href="#/" title="Repetir uma faixa">
+          <i id="btn-repeat-song" style='font-size:16px;' class='fa'>&#xf021;</i>
         </a>
       </div>
 
@@ -117,7 +132,7 @@
         <i id="vol-icon" style='font-size:24px' class='fa'>&#xf027;</i>
         <div class="volume-bar-container">
           <div class="volume-bar">
-            <div class="volume-status"></div>
+            <div class="volume-progress"></div>
           </div>
         </div>
       </div>

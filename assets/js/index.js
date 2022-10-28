@@ -2,29 +2,29 @@ const data = [
     {
         id: 1,
         title:"Piano Forte Scandal",
-        author: "Oster Project",
-        singer: "MEIKO",
+        author: "OSTER Project",
+        singer: "Meiko",
         duration: "3:57",
         image: "piano-forte-scandal.png",
-        file: "piano-forte-scandal.mpeg"
+        file: "piano-forte-scandal.mp3"
     },
     {
         id: 2,
-        title:"Narisumashi Gengar",
-        author: "Kulfi Q",
+        title:"Two Breaths Walking",
+        author: "Deco*27",
+        singer: "Hatsune Miku",
+        duration: "3:07",
+        image: "two-breaths-walking.png",
+        file: "two-breaths-walking.mp3"
+    },
+    {
+        id: 3,
+        title:"Narisumashi Genga",
+        author: "KulfiQ",
         singer: "Hatsune Miku | Kagamine Rin",
         duration: "3:51",
         image: "narisumashi-gengar.jpg",
         file: "narisumashi-gengar.mp3"
-    },
-    {
-        id: 3,
-        title:"Two Breaths Walking",
-        author: "Deco*27",
-        singer: "Hatsune Miku",
-        duration: "3:57",
-        image: "two-breaths-walking.png",
-        file: "two-breaths-walking.mp3"
     },
     {
         id: 4,
@@ -43,6 +43,42 @@ const data = [
         duration: "4:02",
         image: "peace-sign.png",
         file: "peace-sign.mp3"
+    },
+    {
+        id: 6,
+        title:"Blue Boi",
+        author: "LAKEY INSPIRED",
+        singer: "",
+        duration: "1:46",
+        image: "blue-boi.jpg",
+        file: "blue-boi.mp3"
+    },    
+    {
+        id: 7,
+        title:"Feel Good Inc",
+        author: "Gorillaz",
+        singer: "Gorillaz",
+        duration: "3:42",
+        image: "feel-good-inc.jpg",
+        file: "feel-good-inc.mp3"
+    },
+    {
+        id: 8,
+        title:"Tim Henson VS Ichika Nito",
+        author: "",
+        singer: "",
+        duration: "1:39",
+        image: "tim-henson-vs-ichika-nito.png",
+        file: "tim-henson-vs-ichika-nito.mp3"
+    },
+    {
+        id: 9,
+        title:"Sweet Devil",
+        author: "Hachioji P",
+        singer: "Hatsune Miku",
+        duration: "3:59",
+        image: "sweet-devil.jpg",
+        file: "sweet-devil.mp3"
     }
 ]
 
