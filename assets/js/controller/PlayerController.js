@@ -8,6 +8,8 @@ class PlayerController{
         this._mobileGridEl = document.getElementById(mobileGridEl);
         this._data = data;
         this._interval;
+        this._random = false;
+        this._maxVolume = 1.0;
 
         this.init();
     }
@@ -47,13 +49,30 @@ class PlayerController{
         this._interval = interval;
     }
 
+    get random(){
+        return this._random;
+    }
+    set random(random){
+        this._random = random;
+    }
+
+    get maxVolume(){
+        return this._maxVolume;
+    }
+    set maxVolume(maxVolume){
+        this._maxVolume = maxVolume;
+    }
+
     init(){
 
         this.render().then(() =>{
             this.addPlayerEvents();
         });
 
-        this.playerUpdate();
+        this.playerEl.volume = 0.50;
+
+        this.updateTemplateData();
+        this.updatePlayerData();
         this.initControls();
         this.addSongBarEvents();
     }
@@ -70,7 +89,7 @@ class PlayerController{
                 let div = document.createElement('div');
 
                 tr.innerHTML = `
-                <tr class="data-row">
+                <tr>
                     <td>${music.id}</td>
                     <td>${music.title}</td>
                     <td>${music.author}</td>
@@ -79,8 +98,8 @@ class PlayerController{
                 </tr>`
 
                 div.innerHTML = `
-                <div class="song-grid-mobile data-row">
-                    <img class="mobile-song-icon" src="assets/images/${music.image}" alt="">
+                <div class="song-grid-mobile">
+                    <img class="mobile-song-icon" src="assets/images/${music.image}" alt="${music.title} disc">
                     <p class="pa">
                     ${music.title}
                     <br>
@@ -89,12 +108,11 @@ class PlayerController{
                 </div>`
 
                 tr.setAttribute('data-song', JSON.stringify(music));
+                tr.setAttribute('data-id', music.id);
                 tr.classList.add('data-row');
-                div.setAttribute('data-song', JSON.stringify(music));
-                div.classList.add('data-row')
                 
-                this.addEvents(tr);
-                this.addEvents(div);
+                div.setAttribute('data-song', JSON.stringify(music));
+                div.setAttribute('data-id', music.id);
 
                 this.addDesktopEvents(tr);
                 this.addMobileEvents(div);
@@ -105,11 +123,7 @@ class PlayerController{
 
             let firstRow = document.querySelector('tr.data-row');
 
-            this.setPhoto(JSON.parse(firstRow.dataset.song).image);
-            this.setDescription(JSON.parse(firstRow.dataset.song).title, JSON.parse(firstRow.dataset.song).author);
-            this.setFile(JSON.parse(firstRow.dataset.song).file);
-
-            this.setSelectedRow(firstRow);
+            this.setSongPlaying(firstRow);
 
             resolve();
         });
@@ -118,29 +132,32 @@ class PlayerController{
 
     getSelectedRow(){
 
-        let lastSelected = document.querySelector("tr.song-selected");
+        let lastSelected = document.querySelector("tr.song-playing");
 
         return lastSelected ? lastSelected : false;
     }
 
-    setSelectedRow(el){
-        
-        let lastSelected = document.getElementsByClassName("song-selected");
+    setSongPlaying(el){
 
+        this.setPhoto(JSON.parse(el.dataset.song).image);
+        this.setDescription(JSON.parse(el.dataset.song).title, JSON.parse(el.dataset.song).author);
+        this.setFile(JSON.parse(el.dataset.song).file);
+
+        let lastPlayedSong = document.getElementsByClassName("song-playing");
 
         if(this.getSelectedRow()){
 
-            [...lastSelected].forEach((val) =>{
+            [...lastPlayedSong].forEach((val) =>{
 
-                val.classList.remove("song-selected");
+                val.classList.remove("song-playing");
             });
         }
 
-        let songSelected = document.querySelectorAll(`[data-song='${el.dataset.song}']`);
+        let song = document.querySelectorAll(`[data-id='${el.dataset.id}']`);
 
-        [...songSelected].forEach((val) =>{
+        [...song].forEach((val) =>{
 
-            val.classList.add("song-selected");
+            val.classList.add("song-playing");
         });
     }
     
@@ -167,46 +184,25 @@ class PlayerController{
         this._playerEl.setAttribute('src', `assets/music/${file}`);
     }
 
-    addEvents(el){
-
-        el.addEventListener('click', (e) =>{
-
-            this.setSelectedRow(el);
-        });
-    }
-
     addDesktopEvents(el){
 
         el.addEventListener("dblclick", (e) =>{
-
-            let data = JSON.parse(el.dataset.song);
-
-            this.setPhoto(data.image);
-            this.setDescription(data.title, data.author);
-            this.setFile(data.file);
             
+            this.setSongPlaying(el);
             this.play();
-            
         });
     }    
     
     addMobileEvents(el){
-
+        
         el.addEventListener("click", (e) =>{
-
-            let data = JSON.parse(el.dataset.song);
             
-            this.setPhoto(data.image);
-            this.setDescription(data.title, data.author);
-            this.setFile(data.file);
-            
+            this.setSongPlaying(el);
             this.play();
         });
     }
 
     addPlayerEvents(){
-
-        this.playerEl.volume = 0.2;
 
         let volumeBar = this._playerTemplateEl.querySelector('.volume-bar');
 
@@ -225,19 +221,19 @@ class PlayerController{
 
             this._playerTemplateEl.querySelector('#btn-play').style.display = 'inline-block';
             this._playerTemplateEl.querySelector('#btn-pause').style.display = 'none';
-            this.playerUpdate();
+            this.updatePlayerData();
         });
 
         this.playerEl.addEventListener('loadedmetadata', (e) =>{
 
             this.setSongLenght();
-            this.playerUpdate();
+            this.updatePlayerData();
         });
         
         
         this.playerEl.addEventListener('timeupdate', (e) =>{
             
-            this.playerUpdate();
+            this.updatePlayerData();
         });
         
         this.playerEl.addEventListener('ended', (e) =>{
@@ -251,15 +247,13 @@ class PlayerController{
 
         volumeBar.addEventListener('click', (e) =>{
 
-            let maxVolume = 1.0;
-
             let progress = parseInt(((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100);
 
             e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
 
-            let volume = ((progress * maxVolume) / 100).toFixed(1);
+            let volume = ((progress * this._maxVolume) / 100);
 
-            this.playerEl.volume = volume;
+            this.setVolume(volume);
         });
     }
 
@@ -269,32 +263,57 @@ class PlayerController{
 
         songBar.addEventListener('click', (e) =>{
 
+            
             let progress = ((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100;
-
+            
             let time = (progress * this.playerEl.duration) / 100;
-
+            
             e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
-
+            
             this.playerEl.currentTime = time;
         });
+        
+        // songBar.addEventListener('drag', (e) =>{
+            
+        //     this.pause();
 
-        songBar.addEventListener('drag', (e) =>{
+        //     let maxVal = e.currentTarget.offsetWidth;
 
-            console.log(e);
+        //     let progress = ((e.layerX - e.currentTarget.offsetLeft) / maxVal) * 100;
+            
+        //     let time = (progress * this.playerEl.duration) / 100;
+            
+        //     e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
 
-        });
+        //     if(time <= 0){
+
+        //         time = 0;
+                
+        //     }else if(time >= this.playerEl.duration){
+                
+        //         time = this.playerEl.duration;
+        //     }
+
+        //     this.playerEl.currentTime = time;
+        
+        // });
+
+        // songBar.addEventListener('dragend', (e) =>{
+            
+        //     this.play();
+        // });
     }
     
     play(){
             
         this._playerEl.play();
-        this.playerUpdate();
+        this.updatePlayerData();
     }
 
     pause(){
 
         this._playerEl.pause();
-        this.playerUpdate();
+        this.updatePlayerData();
     }
 
     isPaused(){
@@ -306,6 +325,11 @@ class PlayerController{
         return this._playerEl.loop;
     }
 
+    inRandom(){
+
+        return this._random;
+    }
+
     stepBackward(){
 
         if(parseInt(this.playerEl.currentTime) >= 3){
@@ -313,45 +337,96 @@ class PlayerController{
             this.restartSong();
         }else{
 
+            if(this.inLoop()){
+
+                this.setRepeat(false);
+            }
+            
+            if(this.inRandom()){
+                
+                this.setRandomSong(false);
+            }            
+
             if(this.getSelectedRow().previousSibling != null){
 
                 let data = JSON.parse(this.getSelectedRow().previousSibling.dataset.song);
 
-                this.setPhoto(data.image);
-                this.setDescription(data.title, data.author);
-                this.setFile(data.file);
-                this.setSelectedRow(this.getSelectedRow().previousSibling);
+                this.setSongPlaying(this.getSelectedRow().previousSibling);
                 
             }else{
+
                 this.restartSong();
             }
             
             this.play();
         }
     }
+
     stepFoward(){
 
-        if(this.getSelectedRow().nextSibling != null){
+        if(this.inLoop()){
+
+            this.setRepeat(false);
+        }
+        else if(this.inRandom()){
+
+            this.randomSong();
+        }
+
+        else if(this.getSelectedRow().nextSibling != null){
 
             let data = JSON.parse(this.getSelectedRow().nextSibling.dataset.song);
 
-            this.setPhoto(data.image);
-            this.setDescription(data.title, data.author);
-            this.setFile(data.file);
-            this.setSelectedRow(this.getSelectedRow().nextSibling);
-
+            this.setSongPlaying(this.getSelectedRow().nextSibling);
             this.play();
         }
-
     }
 
-    enableRepeat(){
+    setRepeat(value){
 
-        console.log(this);
+        if(!value){
+           
+            this.playerEl.loop = false;
+        }else{
+            
+            this.playerEl.loop = true;
+            this._random = false;
+        }
+        
+        this.updateTemplateData();
+    }
 
+    randomSong(){
+
+        let rand = Math.floor(Math.random() * (this._data.length - 1 + 1)) + 1;
+
+        let songRow = document.querySelector(`tr[data-id='${rand}']`);
+
+        this.setSongPlaying(songRow);
+        this.play();
+    }
+    
+    setRandomSong(value){
+        
+        if(!value){
+            
+            this._random = false;
+        }else{
+            
+            this._random = true;
+            this.playerEl.loop = false;
+        }
+
+        this.updateTemplateData();
+    }
+
+    setVolume(value){
+
+        this.playerEl.volume = value;
     }
 
     restartSong(){
+
         this.playerEl.currentTime = 0;
     }
 
@@ -367,7 +442,6 @@ class PlayerController{
 
                 this.controlExecution(commandName);
             });
-
         });
     }
 
@@ -387,15 +461,17 @@ class PlayerController{
                 this.stepFoward();
             break;
             case 'repeat-song':
-                this.enableRepeat();
+                let repeat = this.playerEl.loop ? false : true;
+                this.setRepeat(repeat);
             break;
             case 'random-song':
-                this.randomSong();
+                let random = this._random ? false : true;
+                this.setRandomSong(random);
             break;
         }
     }
 
-    playerUpdate(){
+    updatePlayerData(){
 
         this.updateProgress();
 
@@ -410,11 +486,41 @@ class PlayerController{
         }
     }
 
+    updateTemplateData(){
+
+        let volumeBar = this._playerTemplateEl.querySelector('.volume-progress');
+        let btnRepeat = this._playerTemplateEl.querySelector('#btn-repeat-song');
+        let btnRandom = this._playerTemplateEl.querySelector('#btn-random-song');
+
+        let volumeProgress = (this.playerEl.volume / this._maxVolume) * 100;
+        let barWidth = volumeBar.parentElement.offsetWidth;
+
+        volumeBar.style.width = ((volumeProgress * barWidth) / 100) + 'px';
+
+        if(this.inLoop()){
+            
+            btnRepeat.classList.add('active');
+            btnRandom.classList.remove('active');
+        }else{
+            
+            btnRepeat.classList.remove('active');
+        }
+        
+        if(this.inRandom()){
+            
+            btnRandom.classList.add('active');
+            btnRepeat.classList.remove('active');
+        }else{
+            
+            btnRandom.classList.remove('active');
+        }
+    }
+
     setInterval(){
 
         this._interval = setInterval(() =>{
 
-            this.playerUpdate();
+            this.updatePlayerData();
 
         }, 1000);
     }
