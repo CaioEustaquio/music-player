@@ -80,7 +80,7 @@
               <th>Titulo</th>
               <th>Autor</th>
               <th>Cantor</th>
-              <th>Duração</th>
+              <th><i class="fa-regular fa-clock"></i></th>
             </tr>
           </thead>
           <tbody></tbody>
@@ -129,7 +129,10 @@
       </div>
 
       <div class="section-right">
-        <i id="vol-icon" style='font-size:24px' class='fa'>&#xf027;</i>
+        <!-- <i id="vol-icon" style='font-size:24px' class="fa-solid fa-volume-xmark fa"></i> -->
+        <i id="vol-icon" style='font-size:24px' class="fa-solid fa-volume-low fa"></i>
+        <!-- <i style='font-size:24px' class="fa-solid fa-volume-high fa"></i> -->
+        <i class="fa-sharp fa-solid fa-volume"></i>
         <div class="volume-bar-container">
           <div class="volume-bar">
             <div class="volume-progress"></div>
@@ -141,7 +144,7 @@
 
     <div class="song-bar-container">
         <p id="song-progression" class="pa">0:00</p>
-        <div class="song-progress-bar">
+        <div class="song-progress-bar" draggable="true">
           <div class="song-progress"></div>
         </div>
         <p id="song-lenght" class="pa"></p>
@@ -151,15 +154,15 @@
 
   <footer class="footer">
     <div class="section-footer-mobile">
-      <a href="#">
+      <a href="#/">
         <i class="fa-solid fa-house"></i>
         Início
       </a>
-      <a href="#">
+      <a href="#/">
         <i class="fa-solid fa-magnifying-glass"></i>
         Buscar
       </a>
-      <a href="">
+      <a href="#/">
         <i class="fa-solid fa-folder"></i>
         Biblioteca
       </a>
