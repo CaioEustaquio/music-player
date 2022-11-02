@@ -70,11 +70,13 @@ class PlayerController{
         });
 
         this.playerEl.volume = 0.50;
-
+        
+        this.addKeyboardEvents();
         this.updateTemplateData();
         this.updatePlayerData();
         this.initControls();
         this.addSongBarEvents();
+
     }
 
     render(){
@@ -257,12 +259,29 @@ class PlayerController{
         });
     }
 
+    addKeyboardEvents(){
+
+        document.addEventListener("keydown", (e) =>{
+
+            e.preventDefault();
+
+            switch(e.code){
+
+                case "Space":
+                    !this.isPaused() ? this.pause() : this.play();
+                    break;
+                default:null;
+                    break;
+                
+            }
+        });
+    }
+
     addSongBarEvents(){
 
         let songBar = this._playerTemplateEl.querySelector('.song-progress-bar');
 
-        songBar.addEventListener('click', (e) =>{
-
+        songBar.addEventListener('mousedown', (e) =>{
             
             let progress = ((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100;
             
@@ -272,36 +291,6 @@ class PlayerController{
             
             this.playerEl.currentTime = time;
         });
-        
-        // songBar.addEventListener('drag', (e) =>{
-            
-        //     this.pause();
-
-        //     let maxVal = e.currentTarget.offsetWidth;
-
-        //     let progress = ((e.layerX - e.currentTarget.offsetLeft) / maxVal) * 100;
-            
-        //     let time = (progress * this.playerEl.duration) / 100;
-            
-        //     e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
-
-        //     if(time <= 0){
-
-        //         time = 0;
-                
-        //     }else if(time >= this.playerEl.duration){
-                
-        //         time = this.playerEl.duration;
-        //     }
-
-        //     this.playerEl.currentTime = time;
-        
-        // });
-
-        // songBar.addEventListener('dragend', (e) =>{
-            
-        //     this.play();
-        // });
     }
     
     play(){

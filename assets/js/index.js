@@ -1,6 +1,15 @@
 const data = [
     {
         id: 1,
+        title:"Dramaturgy",
+        author: "Eve",
+        singer: "Eve",
+        duration: "4:05",
+        image: "dramaturgy.jpeg",
+        file: "dramaturgy.mp3"
+    },
+    {
+        id: 2,
         title:"Piano Forte Scandal",
         author: "OSTER Project",
         singer: "Meiko",
@@ -9,7 +18,7 @@ const data = [
         file: "piano-forte-scandal.mp3"
     },
     {
-        id: 2,
+        id: 3,
         title:"Two Breaths Walking",
         author: "Deco*27",
         singer: "Hatsune Miku",
@@ -18,7 +27,7 @@ const data = [
         file: "two-breaths-walking.mp3"
     },
     {
-        id: 3,
+        id: 4,
         title:"Narisumashi Genga",
         author: "KulfiQ",
         singer: "Hatsune Miku | Kagamine Rin",
@@ -27,7 +36,7 @@ const data = [
         file: "narisumashi-gengar.mp3"
     },
     {
-        id: 4,
+        id: 5,
         title:"Ashita wo Narase",
         author: "Shishido Yuuna",
         singer: "Shishido Yuuna",
@@ -36,7 +45,7 @@ const data = [
         file: "ashita-wo-narase.mp3"
     },
     {
-        id: 5,
+        id: 6,
         title:"Peace Sign",
         author: "Kenshi Yonezu",
         singer: "Kenshi Yonezu",
@@ -45,7 +54,7 @@ const data = [
         file: "peace-sign.mp3"
     },
     {
-        id: 6,
+        id: 7,
         title:"Blue Boi",
         author: "LAKEY INSPIRED",
         singer: "",
@@ -54,7 +63,7 @@ const data = [
         file: "blue-boi.mp3"
     },    
     {
-        id: 7,
+        id: 8,
         title:"Feel Good Inc",
         author: "Gorillaz",
         singer: "Gorillaz",
@@ -63,7 +72,7 @@ const data = [
         file: "feel-good-inc.mp3"
     },
     {
-        id: 8,
+        id: 9,
         title:"Tim Henson VS Ichika Nito",
         author: "",
         singer: "",
@@ -72,14 +81,41 @@ const data = [
         file: "tim-henson-vs-ichika-nito.mp3"
     },
     {
-        id: 9,
+        id: 10,
         title:"Sweet Devil",
         author: "Hachioji P",
         singer: "Hatsune Miku",
         duration: "3:59",
         image: "sweet-devil.jpg",
         file: "sweet-devil.mp3"
-    }
+    },
+    {
+        id: 11,
+        title:"Blood Circulator",
+        author: "ASIAN KUNG FU GENERATION",
+        singer: "ASIAN KUNG FU GENERATION",
+        duration: "3:51",
+        image: "blood-circulator.jpg",
+        file: "blood-circulator.mp3"
+    },
+    {
+        id: 12,
+        title:"Re:Re: (Single ver.)",
+        author: "ASIAN KUNG FU GENERATION",
+        singer: "ASIAN KUNG FU GENERATION",
+        duration: "5:32",
+        image: "re-re-single-version.jpg",
+        file: "re-re-single-version.mp3"
+    },
+    {
+        id: 13,
+        title:"The Rock City Boy",
+        author: "JAMIL",
+        singer: "JAMIL",
+        duration: "3:37",
+        image: "the-rock-city-boy.jpg",
+        file: "the-rock-city-boy.mp3"
+    },
 ]
 
 let controller = new PlayerController('player', 'player-container', 'table-grid', 'grid-mobile', data);
