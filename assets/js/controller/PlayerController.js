@@ -213,16 +213,16 @@ class PlayerController{
             clearInterval(this._interval);
             this.setInterval();
 
-            this._playerTemplateEl.querySelector('#btn-pause').style.display = 'inline-block';     
-            this._playerTemplateEl.querySelector('#btn-play').style.display = 'none';
+            this._playerTemplateEl.querySelector('#btn-play-pause').classList.remove('fa-circle-play');
+            this._playerTemplateEl.querySelector('#btn-play-pause').classList.add('fa-circle-pause');
         });
-
+        
         this.playerEl.addEventListener('pause', (e) =>{
-
+            
             clearInterval(this._interval);
-
-            this._playerTemplateEl.querySelector('#btn-play').style.display = 'inline-block';
-            this._playerTemplateEl.querySelector('#btn-pause').style.display = 'none';
+            
+            this._playerTemplateEl.querySelector('#btn-play-pause').classList.remove('fa-circle-pause');
+            this._playerTemplateEl.querySelector('#btn-play-pause').classList.add('fa-circle-play');
             this.updatePlayerData();
         });
 
@@ -281,7 +281,7 @@ class PlayerController{
 
         let songBar = this._playerTemplateEl.querySelector('.song-progress-bar');
 
-        songBar.addEventListener('mousedown', (e) =>{
+        songBar.addEventListener('click', (e) =>{
             
             let progress = ((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100;
             
@@ -437,11 +437,8 @@ class PlayerController{
     controlExecution(command){
 
         switch(command){
-            case 'play':
-                this.play();
-            break;
-            case 'pause':
-                this.pause();
+            case 'play-pause':
+                this.isPaused() ? this.play() : this.pause();
             break;
             case 'step-backward':
                 this.stepBackward();
