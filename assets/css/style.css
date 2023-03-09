@@ -412,8 +412,19 @@ div.song-playing p{
 	background: #1f8860;
 }
 
-i.fa{
+.low-icon{
     color: #FFF;
+    font-size:16px;
+}
+
+.medium-icon{
+    color: #FFF;
+    font-size:24px;
+}
+
+.big-icon{
+    color: #FFF;
+    font-size:36px;
 }
 
 .song-bar-container{
