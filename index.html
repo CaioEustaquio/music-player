@@ -21,15 +21,15 @@
 
         <div class="menu-options">
           <a href="#/">
-            <i class="fa-solid fa-house medium-icon"></i>
+            <i class="fa-solid fa-house"></i>
             Início
           </a>
           <a href="#/">
-            <i class="fa-solid fa-magnifying-glass medium-icon"></i>
+            <i class="fa-solid fa-magnifying-glass"></i>
             Buscar
           </a>
           <a href="#/">
-            <i class="fa-solid fa-folder medium-icon"></i>
+            <i class="fa-solid fa-folder"></i>
             Biblioteca
           </a>
         </div>
@@ -40,7 +40,7 @@
             Criar playlist
           </a>
           <a href="#/">
-            <i class="fa-sharp fa-solid fa-heart" style="color: #27b17c;"></i>
+            <i class="fa-sharp fa-solid fa-heart"></i>
             Músicas Curtidas
           </a>
         </div>
@@ -50,7 +50,7 @@
       <div class="disc-photo">
 
         <img id="discBanner" class="disc-playing" alt="song-disc" draggable="false">
-        <audio id="player" preload="metadata"></audio>
+
       </div>
 
     </aside>
@@ -61,11 +61,9 @@
 
     <section class="first-section">
 
-      <img class="playlist-img" src="assets/images/disc.png" alt="playlist-disc">
-
-      <div class="playlist-data">
-        <h1>Biblioteca</h1>
-      </div>
+      <img class="playlist-img" src="assets/images/disc.png" alt="playlist-disc" draggable="false">
+      <h1>Biblioteca</h1>
+      <i id="mobile-menu" class="fa-solid fa-bars medium-icon"></i>
 
     </section>
 
@@ -92,38 +90,37 @@
       </div>
         
     </section>
-
     
   </main>
   
   <div id="player-container" class="player-container">
+
+    <audio id="player" preload="metadata"></audio>
 
     <div class="controls">
     
       <div class="section-left">
 
         <p class="pa songDescription">
-          Piano Forte Scandal
           <br>
-          <span>Oster Project</span>
+          <span></span>
         </p>
       </div>
 
       <div class="section-middle">
-        <a href="#/" title="Ativar a ordem aleatória">
+        <a href="#/" title="Ativar a ordem aleatória" draggable="false">
           <i id="btn-random-song" class="fa-solid fa-shuffle low-icon"></i>
         </a>
-        <a href="#/" title="Voltar">
+        <a href="#/" title="Voltar" draggable="false">
           <i id="btn-step-backward" class="fa-solid fa-backward-step low-icon"></i>
         </a>
-        <a href="#/">
+        <a href="#/" draggable="false">
           <i id="btn-play-pause" class="fa-solid fa-circle-play big-icon"></i>
-          <!-- <i id="btn-pause" style='font-size:36px; display: none;' class="fa-solid fa-circle-pause fa"></i> -->
         </a>
-        <a href="#/" title="Avançar">
+        <a href="#/" title="Avançar" draggable="false">
           <i id="btn-step-foward" class="fa-solid fa-forward-step low-icon"></i>
         </a>
-        <a href="#/" title="Repetir uma faixa">
+        <a href="#/" title="Repetir uma faixa" draggable="false">
           <i id="btn-repeat-song" class="fa-solid fa-arrows-rotate low-icon"></i>
         </a>
       </div>
@@ -134,7 +131,7 @@
         <!-- <i style='font-size:24px' class="fa-solid fa-volume-high fa"></i> -->
         <i class="fa-sharp fa-solid fa-volume"></i>
         <div class="volume-bar-container">
-          <div class="volume-bar">
+          <div class="volume-bar" draggable="true">
             <div class="volume-progress"></div>
           </div>
         </div>
@@ -143,9 +140,9 @@
     </div>
 
     <div class="song-bar-container">
-        <p id="song-progression" class="pa">0:00</p>
-        <div class="song-progress-bar">
-          <div class="song-progress"></div>
+        <p id="song-progression" class="pa"></p>
+        <div class="song-progress-bar" draggable="true">
+          <div class="song-progress" ></div>
         </div>
         <p id="song-lenght" class="pa"></p>
     </div>
