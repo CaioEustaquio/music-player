@@ -111,7 +111,6 @@ class PlayerController{
 
                 tr.setAttribute('data-song', JSON.stringify(music));
                 tr.setAttribute('data-id', music.id);
-                tr.classList.add('data-row');
                 
                 div.setAttribute('data-song', JSON.stringify(music));
                 div.setAttribute('data-id', music.id);
@@ -123,13 +122,11 @@ class PlayerController{
                 this._mobileGridEl.append(div);
             });
 
-            let firstRow = document.querySelector('tr.data-row');
-
-            this.setSongPlaying(firstRow);
+            let firstRow = tbody.querySelector('tr');
+            this.setSelectedRow(firstRow);
 
             resolve();
         });
-
     }
 
     getSelectedRow(){
@@ -139,7 +136,7 @@ class PlayerController{
         return lastSelected ? lastSelected : false;
     }
 
-    setSongPlaying(el){
+    setSelectedRow(el){
 
         this.setPhoto(JSON.parse(el.dataset.song).image);
         this.setDescription(JSON.parse(el.dataset.song).title, JSON.parse(el.dataset.song).author);
@@ -190,7 +187,7 @@ class PlayerController{
 
         el.addEventListener("dblclick", (e) =>{
             
-            this.setSongPlaying(el);
+            this.setSelectedRow(el);
             this.play();
         });
     }    
@@ -199,7 +196,7 @@ class PlayerController{
         
         el.addEventListener("click", (e) =>{
             
-            this.setSongPlaying(el);
+            this.setSelectedRow(el);
             this.play();
         });
     }
@@ -207,6 +204,8 @@ class PlayerController{
     addPlayerEvents(){
 
         let volumeBar = this._playerTemplateEl.querySelector('.volume-bar');
+
+        this.progressBar(volumeBar, this.playerEl.volume);
 
         this.playerEl.addEventListener('play', (e) =>{
 
@@ -230,6 +229,7 @@ class PlayerController{
 
             this.setSongLenght();
             this.updatePlayerData();
+
         });
         
         
@@ -245,17 +245,6 @@ class PlayerController{
                 this.stepFoward();
 
             }          
-        });
-
-        volumeBar.addEventListener('click', (e) =>{
-
-            let progress = parseInt(((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100);
-
-            e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
-
-            let volume = ((progress * this._maxVolume) / 100);
-
-            this.setVolume(volume);
         });
     }
 
@@ -277,20 +266,72 @@ class PlayerController{
         });
     }
 
+    progressBar(el, maxValue){
+
+        let barType = el.classList.contains('song-progress-bar') ? "song" : "volume";
+
+        el.addEventListener('click', (e) =>{
+
+            // barxAxis informs the width of the bar on the x-axis
+            let barxAxis = ((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100;
+
+            // barProgress inform the current value of max
+            let value = (barxAxis * maxValue) / 100;
+
+            e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
+
+            barType == "song" ? this.playerEl.currentTime = value : this.setVolume(value);
+        });
+
+        el.addEventListener('dragstart', (e) =>{
+
+            e.dataTransfer.setDragImage(el, -99999, -99999);
+
+            barType == "song" ? this.pause() : null;
+        });
+
+        el.addEventListener('drag', (e) =>{
+
+            let barxAxis = ((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100;
+            let value = (barxAxis * maxValue) / 100;
+            
+            e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
+
+            if(barType == "song"){
+
+                this.playerEl.currentTime = value;
+            }else{
+
+                this.setVolume(value);
+            }
+        });
+
+        el.addEventListener('dragend', (e) =>{
+
+            let barxAxis = ((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100;
+            let value = (barxAxis * maxValue) / 100;
+            
+            e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
+
+            if(barType == "song"){
+
+                this.playerEl.currentTime = value;
+                this.play();
+            }else{
+
+                this.setVolume(value);
+            }
+        });
+    }
+
     addSongBarEvents(){
 
         let songBar = this._playerTemplateEl.querySelector('.song-progress-bar');
 
-        songBar.addEventListener('click', (e) =>{
-            
-            let progress = ((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100;
-            
-            let time = (progress * this.playerEl.duration) / 100;
-            
-            e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
-            
-            this.playerEl.currentTime = time;
-        });
+        this.playerEl.onloadeddata = () =>{
+
+            this.progressBar(songBar, this.playerEl.duration);
+        }
     }
     
     play(){
@@ -340,7 +381,7 @@ class PlayerController{
 
                 let data = JSON.parse(this.getSelectedRow().previousSibling.dataset.song);
 
-                this.setSongPlaying(this.getSelectedRow().previousSibling);
+                this.setSelectedRow(this.getSelectedRow().previousSibling);
                 
             }else{
 
@@ -366,7 +407,7 @@ class PlayerController{
 
             let data = JSON.parse(this.getSelectedRow().nextSibling.dataset.song);
 
-            this.setSongPlaying(this.getSelectedRow().nextSibling);
+            this.setSelectedRow(this.getSelectedRow().nextSibling);
             this.play();
         }
     }
@@ -391,7 +432,7 @@ class PlayerController{
 
         let songRow = document.querySelector(`tr[data-id='${rand}']`);
 
-        this.setSongPlaying(songRow);
+        this.setSelectedRow(songRow);
         this.play();
     }
     
@@ -410,6 +451,14 @@ class PlayerController{
     }
 
     setVolume(value){
+
+        if(value <= 0){
+    
+            value = 0;
+        }else if(value >= 1){
+            
+            value = this._maxVolume;
+        }
 
         this.playerEl.volume = value;
     }
@@ -463,13 +512,10 @@ class PlayerController{
 
         let progressionBar = this._playerTemplateEl.querySelector('.song-progress');
 
-        if(this.playerEl.duration !== undefined){
+        let songProgress = (this.playerEl.currentTime / this.playerEl.duration) * 100;
+        let barWidth = progressionBar.parentElement.offsetWidth;
 
-            let songProgress = (this.playerEl.currentTime / this.playerEl.duration) * 100;
-            let barWidth = progressionBar.parentElement.offsetWidth;
-
-            progressionBar.style.width = ((songProgress * barWidth) / 100) + 'px';
-        }
+        progressionBar.style.width = ((songProgress * barWidth) / 100) + 'px';
     }
 
     updateTemplateData(){
