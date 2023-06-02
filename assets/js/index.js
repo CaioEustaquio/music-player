@@ -116,6 +116,15 @@ const data = [
         image: "the-rock-city-boy.jpg",
         file: "the-rock-city-boy.mp3"
     },
+    {
+        id: 14,
+        title:"Long Way From Home (Zentaro's Theme)",
+        author: "Michael Staple",
+        singer: "",
+        duration: "2:00",
+        image: "long-way-from-home-zentaro-theme.png",
+        file: "long-way-from-home-zentaro-theme.mp3"
+    }
 ]
 
-let controller = new PlayerController('player', 'player-container', 'table-grid', 'grid-mobile', data);
+let controller = new PlayerController('player-container', 'table-grid', 'grid-mobile', data);
