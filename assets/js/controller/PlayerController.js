@@ -1,11 +1,11 @@
 class PlayerController{
 
-    constructor(playerEl, playerTemplateEl, tableEl, mobileGridEl, data){
+    constructor(playerTemplateEl, tableEl, mobileGridEl, data){
 
-        this._playerEl = document.getElementById(playerEl);
-        this._playerTemplateEl = document.getElementById(playerTemplateEl);
         this._tableEl = document.getElementById(tableEl);
         this._mobileGridEl = document.getElementById(mobileGridEl);
+        this._playerTemplateEl = document.getElementById(playerTemplateEl);
+        this._playerEl = this._playerTemplateEl.querySelector('#player');
         this._data = data;
         this._interval;
         this._random = false;
@@ -76,7 +76,6 @@ class PlayerController{
         this.updatePlayerData();
         this.initControls();
         this.addSongBarEvents();
-
     }
 
     render(){
@@ -122,9 +121,17 @@ class PlayerController{
                 this._mobileGridEl.append(div);
             });
 
-            let firstRow = tbody.querySelector('tr');
-            this.setSelectedRow(firstRow);
+            let row;
+            
+            if(!localStorage.getItem("lastSongPlaying")){
 
+                row = tbody.querySelector('tr');
+            }else{
+
+                row = tbody.querySelector(`tr[data-id="${localStorage.getItem("lastSongPlaying")}"]`);
+            }
+            
+            this.setSelectedRow(row);
             resolve();
         });
     }
@@ -158,6 +165,8 @@ class PlayerController{
 
             val.classList.add("song-playing");
         });
+
+        localStorage.setItem("lastSongPlaying", JSON.parse(el.dataset.song).id);
     }
     
     setPhoto(file){
