@@ -9,6 +9,7 @@ class PlayerController{
         this._data = data;
         this._interval;
         this._random = false;
+        this._defaultVolume = 0.50;
         this._maxVolume = 1.0;
 
         this.init();
@@ -62,20 +63,27 @@ class PlayerController{
     set maxVolume(maxVolume){
         this._maxVolume = maxVolume;
     }
+    get defaultVolume(){
+        return this._defaultVolume;
+    }
+    set defaultVolume(defaultVolume){
+        this._defaultVolume = defaultVolume;
+    }
 
     init(){
 
         this.render().then(() =>{
+
             this.addPlayerEvents();
+            this.addKeyboardEvents();
+            this.updateTemplateData();
+            this.updatePlayerData();
+            this.initControls();
+            this.addSongBarEvents();
+            this.setVolume(this.getVolume());
+
         });
 
-        this.playerEl.volume = 0.50;
-        
-        this.addKeyboardEvents();
-        this.updateTemplateData();
-        this.updatePlayerData();
-        this.initControls();
-        this.addSongBarEvents();
     }
 
     render(){
@@ -123,16 +131,20 @@ class PlayerController{
 
             let row;
             
-            if(!localStorage.getItem("lastSongPlaying")){
+            if(!this.getUserPreferences().lastSongPlaying){
 
                 row = tbody.querySelector('tr');
             }else{
 
-                row = tbody.querySelector(`tr[data-id="${localStorage.getItem("lastSongPlaying")}"]`);
+                row = tbody.querySelector(`tr[data-id="${this.getUserPreferences().lastSongPlaying}"]`);
             }
-            
+
             this.setSelectedRow(row);
             resolve();
+
+        }).catch(err =>{
+
+            alert(err);
         });
     }
 
@@ -166,7 +178,7 @@ class PlayerController{
             val.classList.add("song-playing");
         });
 
-        localStorage.setItem("lastSongPlaying", JSON.parse(el.dataset.song).id);
+        this.setUserPreferences("lastSongPlaying", JSON.parse(el.dataset.song).id);
     }
     
     setPhoto(file){
@@ -214,7 +226,7 @@ class PlayerController{
 
         let volumeBar = this._playerTemplateEl.querySelector('.volume-bar');
 
-        this.progressBar(volumeBar, this.playerEl.volume);
+        this.progressBar(volumeBar, this.maxVolume);
 
         this.playerEl.addEventListener('play', (e) =>{
 
@@ -253,82 +265,28 @@ class PlayerController{
                 
                 this.stepFoward();
 
-            }          
+            }
         });
+
+        // this.playerEl.addEventListener('volumechange', (e) =>{
+
+        //     console.log(this.getVolume());
+        // });
     }
 
     addKeyboardEvents(){
 
         document.addEventListener("keydown", (e) =>{
 
-            e.preventDefault();
-
             switch(e.code){
-
+                
                 case "Space":
+                    e.preventDefault();
                     !this.isPaused() ? this.pause() : this.play();
                     break;
                 default:null;
                     break;
                 
-            }
-        });
-    }
-
-    progressBar(el, maxValue){
-
-        let barType = el.classList.contains('song-progress-bar') ? "song" : "volume";
-
-        el.addEventListener('click', (e) =>{
-
-            // barxAxis informs the width of the bar on the x-axis
-            let barxAxis = ((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100;
-
-            // barProgress inform the current value of max
-            let value = (barxAxis * maxValue) / 100;
-
-            e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
-
-            barType == "song" ? this.playerEl.currentTime = value : this.setVolume(value);
-        });
-
-        el.addEventListener('dragstart', (e) =>{
-
-            e.dataTransfer.setDragImage(el, -99999, -99999);
-
-            barType == "song" ? this.pause() : null;
-        });
-
-        el.addEventListener('drag', (e) =>{
-
-            let barxAxis = ((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100;
-            let value = (barxAxis * maxValue) / 100;
-            
-            e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
-
-            if(barType == "song"){
-
-                this.playerEl.currentTime = value;
-            }else{
-
-                this.setVolume(value);
-            }
-        });
-
-        el.addEventListener('dragend', (e) =>{
-
-            let barxAxis = ((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100;
-            let value = (barxAxis * maxValue) / 100;
-            
-            e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
-
-            if(barType == "song"){
-
-                this.playerEl.currentTime = value;
-                this.play();
-            }else{
-
-                this.setVolume(value);
             }
         });
     }
@@ -361,12 +319,12 @@ class PlayerController{
     }
     inLoop(){
 
-        return this._playerEl.loop;
+        return (this._playerEl.loop || this.getUserPreferences().repeat ? true : false);
     }
 
     inRandom(){
 
-        return this._random;
+        return (this._random || this.getUserPreferences().random ? true : false);
     }
 
     stepBackward(){
@@ -430,15 +388,16 @@ class PlayerController{
             
             this.playerEl.loop = true;
             this._random = false;
+            this.setUserPreferences("random", this._random);
         }
         
+        this.setUserPreferences("repeat", value);
         this.updateTemplateData();
     }
 
     randomSong(){
 
         let rand = Math.floor(Math.random() * (this._data.length - 1 + 1)) + 1;
-
         let songRow = document.querySelector(`tr[data-id='${rand}']`);
 
         this.setSelectedRow(songRow);
@@ -450,26 +409,35 @@ class PlayerController{
         if(!value){
             
             this._random = false;
+
         }else{
             
             this._random = true;
             this.playerEl.loop = false;
+            this.setUserPreferences("repeat", this.playerEl.loop);
         }
 
+        this.setUserPreferences("random", value);
         this.updateTemplateData();
+    }
+
+    getVolume(){
+
+        return (this.getUserPreferences().playerVolume ? this.getUserPreferences().playerVolume : this._defaultVolume);
     }
 
     setVolume(value){
 
         if(value <= 0){
-    
+            
             value = 0;
         }else if(value >= 1){
             
-            value = this._maxVolume;
+            value = this.maxVolume;
         }
 
         this.playerEl.volume = value;
+        this.setUserPreferences('playerVolume', value);
     }
 
     restartSong(){
@@ -505,11 +473,11 @@ class PlayerController{
                 this.stepFoward();
             break;
             case 'repeat-song':
-                let repeat = this.playerEl.loop ? false : true;
+                let repeat = this.inLoop() ? false : true;
                 this.setRepeat(repeat);
             break;
             case 'random-song':
-                let random = this._random ? false : true;
+                let random = this.inRandom() ? false : true;
                 this.setRandomSong(random);
             break;
         }
@@ -533,13 +501,14 @@ class PlayerController{
         let btnRepeat = this._playerTemplateEl.querySelector('#btn-repeat-song');
         let btnRandom = this._playerTemplateEl.querySelector('#btn-random-song');
 
-        let volumeProgress = (this.playerEl.volume / this._maxVolume) * 100;
+        let volumeProgress = (this.getVolume() / this._maxVolume) * 100;
+
         let barWidth = volumeBar.parentElement.offsetWidth;
 
         volumeBar.style.width = ((volumeProgress * barWidth) / 100) + 'px';
 
         if(this.inLoop()){
-            
+
             btnRepeat.classList.add('active');
             btnRandom.classList.remove('active');
         }else{
@@ -584,5 +553,102 @@ class PlayerController{
         let durationSecond = Utils.toSeconds(durationMinute, this.playerEl.duration);
 
         songLenght.innerHTML = `${durationMinute}:${Utils.padTo2Digits(durationSecond)}`;
+    }
+
+    getUserPreferences(){
+
+        let preferences = JSON.parse(localStorage.getItem('userPreferences'));
+
+        if(!preferences){
+
+            preferences = {};
+        }else{
+
+            preferences.playerVolume = parseFloat(preferences.playerVolume);
+        }
+
+        return preferences;
+    }
+    setUserPreferences(option, value){
+
+        let preferences = this.getUserPreferences();
+        
+        switch(option){
+            
+            case 'lastSongPlaying':
+                preferences.lastSongPlaying = value;
+                break;
+            case 'playerVolume':
+                preferences.playerVolume = value;
+                break;
+            case 'random':
+                preferences.random = value;
+                break;
+            case 'repeat':
+                preferences.repeat = value;
+                break;
+        }
+            
+        localStorage.setItem('userPreferences', JSON.stringify(preferences));
+    }
+
+    progressBar(el, maxValue){
+
+        let barType = el.classList.contains('song-progress-bar') ? "song" : "volume";
+
+        el.addEventListener('click', (e) =>{
+
+            // barxAxis informs the width of the bar on the x-axis
+            let barxAxis = ((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100;
+
+            // barProgress inform the current value of max
+            let value = (barxAxis * maxValue) / 100;
+
+            e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
+
+            barType == "song" ? this.playerEl.currentTime = value : this.setVolume(value);
+        });
+
+        el.addEventListener('dragstart', (e) =>{
+
+            e.dataTransfer.setDragImage(el, -99999, -99999);
+
+            barType == "song" ? this.pause() : null;
+        });
+
+        el.addEventListener('drag', (e) =>{
+
+            let barxAxis = ((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100;
+            let value = (barxAxis * maxValue) / 100;
+
+            console.log(barxAxis);
+            
+            e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
+
+            if(barType == "song"){
+
+                this.playerEl.currentTime = value;
+            }else{
+
+                this.setVolume(value);
+            }
+        });
+
+        el.addEventListener('dragend', (e) =>{
+
+            let barxAxis = ((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100;
+            let value = (barxAxis * maxValue) / 100;
+            
+            e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
+
+            if(barType == "song"){
+
+                this.playerEl.currentTime = value;
+                this.play();
+            }else{
+
+                this.setVolume(value);
+            }
+        });
     }
 }
