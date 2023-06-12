@@ -404,6 +404,14 @@ div.song-playing .song-name{
         background: rgb(24,24,24);
     }
 
+    .header{
+        height: 0vh;
+    }
+
+    .main-content{
+        height: 0vh;
+    }
+
     .menu{
         display: none;
     } 
@@ -432,7 +440,7 @@ div.song-playing .song-name{
     }
     .grid-mobile-container{
         display: block;
-        height: 70vh;
+        height: 64vh;
     }
     .player-container{
         position: initial;
@@ -443,6 +451,8 @@ div.song-playing .song-name{
     }
 
     .footer{
+        position: -webkit-sticky;
+        position: sticky;
         display: flex;
         flex-direction: column;
         position: fixed;
@@ -468,7 +478,6 @@ div.song-playing .song-name{
         display: none;
     }
     .section-footer-mobile{
-        position: fixed;
         left: 0;
         bottom: 0;
         width: 100%;
