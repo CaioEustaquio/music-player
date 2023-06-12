@@ -2,24 +2,23 @@ class PlayerController{
 
     constructor(playerTemplateEl, tableEl, mobileGridEl, data){
 
+        this.onsongchange = new Event('songchange');
+
+        this._playerTemplateEl = document.getElementById(playerTemplateEl);
         this._tableEl = document.getElementById(tableEl);
         this._mobileGridEl = document.getElementById(mobileGridEl);
-        this._playerTemplateEl = document.getElementById(playerTemplateEl);
-        this._playerEl = this._playerTemplateEl.querySelector('#player');
         this._data = data;
+        this._playerEl = this._playerTemplateEl.querySelector('#player');
+        this._discBanner = document.querySelector('#discBanner');
+        this._progressBar = this._playerTemplateEl.querySelector('.song-bar-container');
+        this._volumeBar = this._playerTemplateEl.querySelector('.volume-bar-container');
+        this._volIcon = document.querySelector('#vol-icon');
         this._interval;
-        this._random = false;
+        this._random;
         this._defaultVolume = 0.50;
         this._maxVolume = 1.0;
 
         this.init();
-    }
-
-    get playerEl(){
-        return this._playerEl;
-    }
-    set playerEl(playerEl){
-        this._playerEl = playerEl;
     }
 
     get playerTemplateEl(){
@@ -27,7 +26,7 @@ class PlayerController{
     }
     set playerTemplateEl(playerTemplateEl){
         this._playerTemplateEl = playerTemplateEl;
-    }    
+    }
 
     get tableEl(){
         return this._tableEl;
@@ -43,6 +42,48 @@ class PlayerController{
         this._mobileGridEl = mobileGridEl;
     }
 
+    get data(){
+        return this._data;
+    }
+    set data(data){
+        this._data = data;
+    }
+
+    get playerEl(){
+        return this._playerEl;
+    }
+    set playerEl(playerEl){
+        this._playerEl = playerEl;
+    }
+
+    get discBanner(){
+        return this._discBanner;
+    }
+    set discBanner(discBanner){
+        this._discBanner = discBanner;
+    }
+
+    get progressBar(){
+        return this._progressBar;
+    }
+    set progressBar(progressBar){
+        this._progressBar = progressBar;
+    }
+
+    get volumeBar(){
+        return this._volumeBar;
+    }
+    set volumeBar(volumeBar){
+        this._volumeBar = volumeBar;
+    }
+
+    get volIcon(){
+        return this._volIcon;
+    }
+    set volIcon(volIcon){
+        this._volIcon = volIcon;
+    }    
+
     get interval(){
         return this._interval;
     }
@@ -57,17 +98,18 @@ class PlayerController{
         this._random = random;
     }
 
-    get maxVolume(){
-        return this._maxVolume;
-    }
-    set maxVolume(maxVolume){
-        this._maxVolume = maxVolume;
-    }
     get defaultVolume(){
         return this._defaultVolume;
     }
     set defaultVolume(defaultVolume){
         this._defaultVolume = defaultVolume;
+    }
+
+    get maxVolume(){
+        return this._maxVolume;
+    }
+    set maxVolume(maxVolume){
+        this._maxVolume = maxVolume;
     }
 
     init(){
@@ -84,6 +126,16 @@ class PlayerController{
 
         });
 
+        this.playerEl.addEventListener('songchange', (e) =>{
+
+            if(this.getSelectedRow()){
+
+                this._playerTemplateEl.style.display = 'flex';
+                this._discBanner.style.display = 'block';
+            }
+
+        })
+
     }
 
     render(){
@@ -99,28 +151,31 @@ class PlayerController{
 
                 tr.innerHTML = `
                 <tr>
-                    <td>${music.id}</td>
-                    <td>${music.title}</td>
-                    <td>${music.author}</td>
-                    <td>${music.singer}</td>
-                    <td>${music.duration}</td>
+                    <td id="song" class="table-data-song">${music.id}</td>
+                    <td id="title" class="table-data-title">${music.title}</td>
+                    <td id="author" class="table-data-author">${music.author}</td>
+                    <td id="singer" class="table-data-singer">${music.singer}</td>
+                    <td id="duration" class="table-data-duration">${music.duration}</td>
                 </tr>`
 
                 div.innerHTML = `
                 <div class="song-grid-mobile">
                     <img class="mobile-song-icon" src="assets/images/${music.image}" alt="${music.title} disc">
-                    <p class="pa">
-                    ${music.title}
-                    <br>
-                    <span>${music.author}</span>
-                    </p>
+                    <div class="song-info">
+                        <p class="song-name">
+                            ${music.title}
+                        </p>
+                        <p class="song-author">
+                            ${music.author}
+                        </p>
+                    </div>
                 </div>`
 
-                tr.setAttribute('data-song', JSON.stringify(music));
-                tr.setAttribute('data-id', music.id);
+                tr.dataset.id = music.id;
+                tr.dataset.song = JSON.stringify(music);
                 
-                div.setAttribute('data-song', JSON.stringify(music));
-                div.setAttribute('data-id', music.id);
+                div.dataset.id = music.id;
+                div.dataset.song = JSON.stringify(music);
 
                 this.addDesktopEvents(tr);
                 this.addMobileEvents(div);
@@ -129,17 +184,11 @@ class PlayerController{
                 this._mobileGridEl.append(div);
             });
 
-            let row;
-            
-            if(!this.getUserPreferences().lastSongPlaying){
+            if(this.getUserPreferences().lastSongPlaying){
 
-                row = tbody.querySelector('tr');
-            }else{
-
-                row = tbody.querySelector(`tr[data-id="${this.getUserPreferences().lastSongPlaying}"]`);
+                this.setSelectedRow(tbody.querySelector(`tr[data-id="${this.getUserPreferences().lastSongPlaying}"]`));
             }
 
-            this.setSelectedRow(row);
             resolve();
 
         }).catch(err =>{
@@ -157,9 +206,7 @@ class PlayerController{
 
     setSelectedRow(el){
 
-        this.setPhoto(JSON.parse(el.dataset.song).image);
-        this.setDescription(JSON.parse(el.dataset.song).title, JSON.parse(el.dataset.song).author);
-        this.setFile(JSON.parse(el.dataset.song).file);
+        this.setSelectedSong(JSON.parse(el.dataset.song));
 
         let lastPlayedSong = document.getElementsByClassName("song-playing");
 
@@ -179,23 +226,24 @@ class PlayerController{
         });
 
         this.setUserPreferences("lastSongPlaying", JSON.parse(el.dataset.song).id);
+        this._playerEl.dispatchEvent(this.onsongchange);
+    }
+
+    setSelectedSong(song){
+
+        this.setPhoto(song.image);
+        this.setDescription(song.title, song.author);
+        this.setFile(song.file);
     }
     
     setPhoto(file){
         
-        let songPhoto = document.querySelector("#discBanner");
-
-        discBanner.setAttribute('src', `assets/images/${file}`);
+        this.discBanner.setAttribute('src', `assets/images/${file}`);
     }
     
     setDescription(title, author){
         
-        let songDescription = document.querySelectorAll('.songDescription');
-        
-        [...songDescription].forEach((el) =>{
-
-            el.innerHTML = `${title}<br><span>${author}</span>`;
-        });
+        this.playerTemplateEl.querySelector('.song-description').innerHTML = `${title}<span>${author}</span>`;
 
     }
 
@@ -268,10 +316,10 @@ class PlayerController{
             }
         });
 
-        // this.playerEl.addEventListener('volumechange', (e) =>{
+        this.playerEl.addEventListener('volumechange', (e) =>{
 
-        //     console.log(this.getVolume());
-        // });
+            this.changeVolIcon();
+        });
     }
 
     addKeyboardEvents(){
@@ -293,11 +341,11 @@ class PlayerController{
 
     addSongBarEvents(){
 
-        let songBar = this._playerTemplateEl.querySelector('.song-progress-bar');
+        let progressBar = this._progressBar.querySelector('.song-progress-bar');
 
         this.playerEl.onloadeddata = () =>{
 
-            this.progressBar(songBar, this.playerEl.duration);
+            this.progressBar(progressBar, this.playerEl.duration);
         }
     }
     
@@ -346,9 +394,9 @@ class PlayerController{
 
             if(this.getSelectedRow().previousSibling != null){
 
-                let data = JSON.parse(this.getSelectedRow().previousSibling.dataset.song);
+                let previousSong = this.getSelectedRow().previousSibling;
 
-                this.setSelectedRow(this.getSelectedRow().previousSibling);
+                this.setSelectedRow(previousSong);
                 
             }else{
 
@@ -372,9 +420,9 @@ class PlayerController{
 
         else if(this.getSelectedRow().nextSibling != null){
 
-            let data = JSON.parse(this.getSelectedRow().nextSibling.dataset.song);
+            let nextSong = this.getSelectedRow().nextSibling;
 
-            this.setSelectedRow(this.getSelectedRow().nextSibling);
+            this.setSelectedRow(nextSong);
             this.play();
         }
     }
@@ -423,7 +471,17 @@ class PlayerController{
 
     getVolume(){
 
-        return (this.getUserPreferences().playerVolume ? this.getUserPreferences().playerVolume : this._defaultVolume);
+        let volume;
+
+        if(this.getUserPreferences().playerVolume || this.getUserPreferences().playerVolume >= 0){
+
+            volume = this.getUserPreferences().playerVolume;
+        }else{
+
+            volume = this._defaultVolume;
+        }
+
+        return volume;
     }
 
     setVolume(value){
@@ -487,7 +545,7 @@ class PlayerController{
 
         this.updateProgress();
 
-        let progressionBar = this._playerTemplateEl.querySelector('.song-progress');
+        let progressionBar = document.querySelector('.song-progress');
 
         let songProgress = (this.playerEl.currentTime / this.playerEl.duration) * 100;
         let barWidth = progressionBar.parentElement.offsetWidth;
@@ -537,7 +595,7 @@ class PlayerController{
 
     updateProgress(){
 
-        let songProgression = this._playerTemplateEl.querySelector('#song-progression');
+        let songProgression = this._progressBar.querySelector('#song-progression');
 
         let currentMinute = Utils.toMinutes(this.playerEl.currentTime);
         let currentSecond = Utils.toSeconds(currentMinute, this.playerEl.currentTime);
@@ -547,7 +605,7 @@ class PlayerController{
 
     setSongLenght(){
 
-        let songLenght = this._playerTemplateEl.querySelector('#song-lenght');
+        let songLenght = this._progressBar.querySelector('#song-lenght');
 
         let durationMinute = Utils.toMinutes(this.playerEl.duration);
         let durationSecond = Utils.toSeconds(durationMinute, this.playerEl.duration);
@@ -564,7 +622,12 @@ class PlayerController{
             preferences = {};
         }else{
 
-            preferences.playerVolume = parseFloat(preferences.playerVolume);
+            if(preferences.lastSongPlaying){
+
+                this._playerEl.dispatchEvent(this.onsongchange);
+            }
+
+            preferences.playerVolume = preferences.playerVolume;
         }
 
         return preferences;
@@ -621,8 +684,6 @@ class PlayerController{
             let barxAxis = ((e.layerX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth) * 100;
             let value = (barxAxis * maxValue) / 100;
 
-            console.log(barxAxis);
-            
             e.currentTarget.firstElementChild.style.width = (e.layerX - e.currentTarget.offsetLeft) + 'px';
 
             if(barType == "song"){
@@ -650,5 +711,36 @@ class PlayerController{
                 this.setVolume(value);
             }
         });
+    }
+
+    changeVolIcon(){
+
+        if(this.getVolume() <= 0){
+
+            this.volIcon.classList.add('fa-volume-xmark');
+            this.volIcon.classList.remove('fa-volume-off');
+            this.volIcon.classList.remove('fa-volume-low');
+            this.volIcon.classList.remove('fa-volume-high');
+            
+        }else if(this.getVolume() > 0 && this.getVolume() <= 0.25){
+            
+            this.volIcon.classList.remove('fa-volume-xmark');
+            this.volIcon.classList.add('fa-volume-off');
+            this.volIcon.classList.remove('fa-volume-low');
+            this.volIcon.classList.remove('fa-volume-high');
+        }else if(this.getVolume() > 0.26 && this.getVolume() <= 0.7){
+
+            this.volIcon.classList.remove('fa-volume-xmark');
+            this.volIcon.classList.remove('fa-volume-off');
+            this.volIcon.classList.add('fa-volume-low');
+            this.volIcon.classList.remove('fa-volume-high');
+        }else if(this.getVolume() > 0.71 && this.getVolume() <= 1.0){
+
+            this.volIcon.classList.remove('fa-volume-xmark');
+            this.volIcon.classList.remove('fa-volume-off');
+            this.volIcon.classList.remove('fa-volume-low');
+            this.volIcon.classList.add('fa-volume-high');
+        }
+
     }
 }
