@@ -60,9 +60,22 @@
 
     <section class="first-section">
 
-      <img class="playlist-img" src="assets/images/disc.png" alt="playlist-disc" draggable="false">
-      <h1>Sua Biblioteca</h1>
-      <i id="mobile-menu" class="fa-solid fa-bars medium-icon"></i>
+      <img class="playlist-img" src="./assets/images/disc.png" alt="playlist-disc" draggable="false">
+
+        <h1>
+          <img id="profile-photo" src="./assets/images/meiko-user-profile.jpg" alt="user profile photo ">
+          <!-- <img id="profile-photo" src="./assets/images/default-user.png" alt="user profile photo "> -->
+          Sua Biblioteca
+        </h1>
+
+      <div class="first-section-options">
+        <button class="icon">
+          <i class="fa-solid fa-magnifying-glass small-icon"></i>
+        </button>
+        <button class="icon">
+          <i class="fa-solid fa-plus small-icon"></i>
+        </button>
+      </div>
 
     </section>
 
@@ -107,28 +120,28 @@
           </div>
 
           <div class="section-middle">
-            <a href="#/" title="Ativar a ordem aleatória" draggable="false">
-              <i id="btn-random-song" class="fa-solid fa-shuffle low-icon"></i>
-            </a>
-            <a href="#/" title="Voltar" draggable="false">
-              <i id="btn-step-backward" class="fa-solid fa-backward-step low-icon"></i>
-            </a>
-            <a href="#/" draggable="false">
-              <i id="btn-play-pause" class="fa-solid fa-circle-play big-icon"></i>
-            </a>
-            <a href="#/" title="Avançar" draggable="false">
-              <i id="btn-step-foward" class="fa-solid fa-forward-step low-icon"></i>
-            </a>
-            <a href="#/" title="Repetir uma faixa" draggable="false">
-              <i id="btn-repeat-song" class="fa-solid fa-arrows-rotate low-icon"></i>
-            </a>
+            <button class="active-button" title="Ativar a ordem aleatória" draggable="false">
+              <i id="btn-random-song" class="fa-solid fa-shuffle tiny-icon"></i>
+            </button>
+            <button class="active-button" title="Voltar" draggable="false">
+              <i id="btn-step-backward" class="fa-solid fa-backward-step tiny-icon"></i>
+            </button>
+            <button class="active-button" draggable="false">
+              <i id="btn-play-pause" class="fa-solid fa-circle-play medium-icon"></i>
+            </button>
+            <button class="active-button" title="Avançar" draggable="false">
+              <i id="btn-step-foward" class="fa-solid fa-forward-step tiny-icon"></i>
+            </button>
+            <button class="active-button" title="Repetir uma faixa" draggable="false">
+              <i id="btn-repeat-song" class="fa-solid fa-arrows-rotate tiny-icon"></i>
+            </button>
           </div>
     
           <div class="section-right">
             <i id="vol-icon" class="fa-solid fa-volume-off medium-icon"></i>
             <i class="fa-sharp fa-solid fa-volume"></i>
             <div class="volume-bar-container">
-              <div class="volume-bar" draggable="true">
+              <div class="volume-bar hover-colored" draggable="true">
                 <div class="volume-progress"></div>
               </div>
             </div>
@@ -137,17 +150,21 @@
 
         <div class="bottom-section">
 
-          <div class="song-bar-container">
-            <p id="song-progression" class="pa"></p>
-            <div class="song-progress-bar" draggable="true">
-              <div class="song-progress" ></div>
+          <div id="song-bar-container" class="song-bar-container">
+            <p id="song-progression"></p>
+            <div class="song-progress-bar hover-colored" draggable="true">
+              <div class="song-progress progress"></div>
             </div>
-            <p id="song-lenght" class="pa"></p>
+            <p id="song-lenght"></p>
           </div>
           
         </div>
       </div>
   
+    </div>
+
+    <div id="mobile-progress-bar" class="small-song-progress-bar">
+      <div class="small-song-progress progress"></div>
     </div>
 
     <div class="section-footer-mobile">
