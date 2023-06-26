@@ -124,7 +124,7 @@ const data = [
         duration: "2:00",
         image: "long-way-from-home-zentaro-theme.png",
         file: "long-way-from-home-zentaro-theme.mp3"
-    }
+    },
 ]
 
 let controller = new PlayerController('player-container', 'table-grid', 'grid-mobile', data);
