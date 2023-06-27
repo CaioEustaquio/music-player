@@ -163,7 +163,7 @@ body{
     display: none;
     padding-top: 2vh;
     overflow-y: auto;
-    height: 65vh;
+    height: 64vh;
 }
 
 .grid-mobile{
@@ -190,7 +190,6 @@ body{
 }
 
 .song-grid-mobile:hover{
-    background-color: rgb(129, 129, 129);
     cursor: pointer;
 }
 
