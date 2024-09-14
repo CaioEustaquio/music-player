@@ -1,6 +1,6 @@
 [
   {
-      "id": 1,
+      "id": "e3233f9d-f4e9-4985-85db-137863f66a9a",
       "title":"Dramaturgy",
       "author": "Eve",
       "singer": "Eve",
@@ -9,7 +9,7 @@
       "file": "./files/music/dramaturgy.mp3"
   },
   {
-      "id": 2,
+      "id": "dc05871e-1e1a-4327-adb3-152bdae5d864",
       "title":"Piano Forte Scandal",
       "author": "OSTER Project",
       "singer": "Meiko",
@@ -18,7 +18,7 @@
       "file": "./files/music/piano-forte-scandal.mp3"
   },
   {
-      "id": 3,
+      "id": "325a33cc-364d-4e11-a625-ac54dfa99b47",
       "title":"Two Breaths Walking",
       "author": "Deco*27",
       "singer": "Hatsune Miku",
@@ -27,7 +27,7 @@
       "file": "./files/music/two-breaths-walking.mp3"
   },
   {
-      "id": 4,
+      "id": "39c09c92-5964-4775-8041-74a6161b5531",
       "title":"Narisumashi Genga",
       "author": "KulfiQ",
       "singer": "Hatsune Miku | Kagamine Rin",
@@ -36,7 +36,7 @@
       "file": "./files/music/narisumashi-gengar.mp3"
   },
   {
-      "id": 5,
+      "id": "d1a6f4fb-ce96-49a5-b271-cf53502afb90",
       "title":"Ashita wo Narase",
       "author": "Shishido Yuuna",
       "singer": "Shishido Yuuna",
@@ -45,7 +45,7 @@
       "file": "./files/music/ashita-wo-narase.mp3"
   },
   {
-      "id": 6,
+      "id": "ac923524-be15-4e4f-9493-9651f5c5df2c",
       "title":"Peace Sign",
       "author": "Kenshi Yonezu",
       "singer": "Kenshi Yonezu",
@@ -54,7 +54,7 @@
       "file": "./files/music/peace-sign.mp3"
   },
   {
-      "id": 7,
+      "id": "8a2a6cc3-d3f6-49de-9a9b-413bb60efcaa",
       "title":"Blue Boi",
       "author": "LAKEY INSPIRED",
       "singer": "",
@@ -63,7 +63,7 @@
       "file": "./files/music/blue-boi.mp3"
   },    
   {
-      "id": 8,
+      "id": "a009e11e-99ec-4052-8420-53c1854cdcbf",
       "title":"Feel Good Inc",
       "author": "Gorillaz",
       "singer": "Gorillaz",
@@ -72,7 +72,7 @@
       "file": "./files/music/feel-good-inc.mp3"
   },
   {
-      "id": 9,
+      "id": "2c73ed9b-bb1a-41e3-89ea-69f22e03744d",
       "title":"Tim Henson VS Ichika Nito",
       "author": "",
       "singer": "",
@@ -81,7 +81,7 @@
       "file": "./files/music/tim-henson-vs-ichika-nito.mp3"
   },
   {
-      "id": 10,
+      "id": "dcf65149-ed4e-442f-a41d-d6006ae02f32",
       "title":"Sweet Devil",
       "author": "Hachioji P",
       "singer": "Hatsune Miku",
@@ -90,7 +90,7 @@
       "file": "./files/music/sweet-devil.mp3"
   },
   {
-      "id": 11,
+      "id": "e7906956-8c89-4bd0-af3b-4143e89c47d5",
       "title":"Blood Circulator",
       "author": "ASIAN KUNG FU GENERATION",
       "singer": "ASIAN KUNG FU GENERATION",
@@ -99,7 +99,7 @@
       "file": "./files/music/blood-circulator.mp3"
   },
   {
-      "id": 12,
+      "id": "81a6ce77-fbe3-4cd6-8c0d-e89e64f8f162",
       "title":"Re:Re: (Single ver.)",
       "author": "ASIAN KUNG FU GENERATION",
       "singer": "ASIAN KUNG FU GENERATION",
@@ -108,7 +108,7 @@
       "file": "./files/music/re-re-single-version.mp3"
   },
   {
-      "id": 13,
+      "id": "e8e9553a-5b74-4a62-9f7e-cbaa5bd02559",
       "title":"The Rock City Boy",
       "author": "JAMIL",
       "singer": "JAMIL",
@@ -117,7 +117,7 @@
       "file": "./files/music/the-rock-city-boy.mp3"
   },
   {
-      "id": 14,
+      "id": "26f4f4cf-5aec-4d1c-a366-7c317c57958f",
       "title":"Long Way From Home (Zentaro's Theme)",
       "author": "Michael Staple",
       "singer": "",

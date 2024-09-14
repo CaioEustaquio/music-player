@@ -63,30 +63,31 @@
         <tbody>
         </tbody>
       </table>
-
     </section>
   </main>
+  <audio id="song-audio" src="" preload="auto"></audio>
   <footer id="footer">
-    <section id="desktop-player-controls" class="active">
+    <section id="desktop-player-controls">
       <section id="current-song-info">
         <img id="song-thumbnail" src="./files/thumbnail/dramaturgy.jpeg" alt="current song thumbnail">
         <div>
-          <h2 id="song-title">Dramaturgy</h2>
-          <h2 id="song-author">Eve</h2>
+          <h2 id="song-title"></h2>
+          <h2 id="song-author"></h2>
         </div>
       </section>
       <section id="player-primary-controls">
         <div id="controls">
-          <button id="shuffle-btn" class="icon-button active"><i data-lucide="shuffle"></i></button>
+          <button id="shuffle-btn" class="icon-button"><i data-lucide="shuffle"></i></button>
           <button id="skip-back-btn" class="icon-button"><i data-lucide="skip-back"></i></button>
           <button id="play-btn" class="icon-button"><i data-lucide="circle-play"></i></button>
+          <button id="pause-btn" class="icon-button"><i data-lucide="circle-pause"></i></button>
           <button id="skip-forward-btn" class="icon-button"><i data-lucide="skip-forward"></i></button>
           <button id="repeat-btn" class="icon-button"><i data-lucide="repeat"></i></button>
         </div>
         <div id="progress-bar-container">
           <p><span id="current-time">0:00</span></p>
-          <progress id="desktop-progress-bar" class="default-progress-bar" max="100" value="27"></progress>
-          <p><span id="total-time">4:05</span></p>
+          <progress id="desktop-progress-bar" class="default-progress-bar" max="100" value=""></progress>
+          <p><span id="total-time"></span></p>
         </div>
       </section>
       <section id="player-secondary-controls">
