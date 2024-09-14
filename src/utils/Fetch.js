@@ -1,4 +1,4 @@
-class Fetch{
+export class Fetch{
 
   static async get(url, params = {}){
 
@@ -52,5 +52,3 @@ class Fetch{
     }      
   }
 }
-
-export default Fetch;

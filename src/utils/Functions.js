@@ -1,4 +1,4 @@
-class Utils{
+export class Functions{
 
     static toMinutes(time){
         return Math.floor(time / 60);
@@ -12,5 +12,3 @@ class Utils{
         return num.toString().padStart(2, '0');
     }
 }
-
-export default Utils;

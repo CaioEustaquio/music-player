@@ -122,7 +122,8 @@ li.item-menu a{
     width: 200px;
 }
 
-#playlist-info h1, #playlist-info p{
+#playlist-info h1,
+#playlist-info p{
     color: var(--secondary-color);
 }
 
@@ -155,6 +156,11 @@ li.item-menu a{
     color: var(--secondary-color);
 }
 
+#desktop-songs-table tbody tr.song-playing td:nth-child(1),
+#desktop-songs-table tbody tr.song-playing td:nth-child(2){
+    color: #27b17c;
+}
+
 #desktop-songs-table tbody tr:hover{
     background-color: #4D4D4D;
 }
@@ -169,6 +175,7 @@ li.item-menu a{
     width: 100%;
     height: 90px;
     padding: 12px;
+    display: none;
     flex-direction: row;
     align-items: center;
     justify-content:space-between;
@@ -183,7 +190,10 @@ li.item-menu a{
     display: flex;
     align-items: center;
     width: 100px;
+    /* width: 320px; */
     gap: 0 12px;
+    white-space: nowrap;
+    /* overflow: hidden; */
 }
 
 #current-song-info #song-thumbnail{
@@ -228,6 +238,10 @@ li.item-menu a{
 .icon-button:hover{
     color: var(--secondary-color);
     transition: color 0.3s;
+}
+
+#play-btn, #pause-btn{
+    display: none;
 }
 
 #progress-bar-container{
