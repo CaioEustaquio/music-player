@@ -8,6 +8,7 @@
 
 :root{
     --background-1: #000000;
+    --background-2: #121212;
     --primary-color: #B0B0B0;
     --secondary-color: #FFFFFF;
     --main-font: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -60,7 +61,7 @@ aside#menu-container{
     position: sticky;
     width: 20%;
     height: 100vh;
-    background-color: var(--background-1);
+    background-color: var(--background-2);
 }
 
 aside#menu-container a{
@@ -106,7 +107,7 @@ li.item-menu a{
     width: 80%;
     padding: 44px 22px;
     background: rgb(0,0,0);
-    background: linear-gradient(0deg, rgba(0,0,0,1) 70%, rgba(72,52,142,1) 96%, rgba(72,52,142,1) 100%);
+    background: linear-gradient(0deg, #121212 70%, rgba(72,52,142,1) 96%, rgba(72,52,142,1) 100%);
 }
 
 #section-top{
@@ -162,7 +163,7 @@ li.item-menu a{
 }
 
 #desktop-songs-table tbody tr:hover{
-    background-color: #4D4D4D;
+    background-color: #2A2A2A;
 }
 
 #desktop-songs-table tr{
