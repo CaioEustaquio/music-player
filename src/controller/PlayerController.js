@@ -14,10 +14,10 @@ export class PlayerController{
     this._songCurrentTimeEl = document.querySelector("p span#current-time");
     this._songDurationEl = document.querySelector("p span#total-time");
     this._songProgressBarEl = document.querySelector("progress#desktop-progress-bar");
-    this._playBtnEl = document.querySelector("#play-btn")
-    this._pauseBtnEl = document.querySelector("#pause-btn")
-    this._skipBackBtnEl = document.querySelector("#skip-back-btn")
-    this._skipForwardBtnEl = document.querySelector("#skip-forward-btn")
+    this._playBtnEl = document.querySelector("#play-btn");
+    this._pauseBtnEl = document.querySelector("#pause-btn");
+    this._skipBackBtnEl = document.querySelector("#skip-back-btn");
+    this._skipForwardBtnEl = document.querySelector("#skip-forward-btn");
     this._setShuffleBtnEl = document.querySelector("button#shuffle-btn");
     this._setLoopBtnEl = document.querySelector("button#repeat-btn");
     this._audioEl = document.querySelector("#song-audio");
@@ -26,6 +26,7 @@ export class PlayerController{
     this._currentSongPlaying;
     this._playerInterval;
     this._songPlayerInShuffle = false;
+    this._lastRandomSong;
 
     this.init();
   }
@@ -59,6 +60,14 @@ export class PlayerController{
   }
   set songPlayerInShuffle(songPlayerInShuffle){
     this._songPlayerInShuffle = songPlayerInShuffle;
+    return this;
+  }
+
+  get lastRandomSong(){
+    return this._lastRandomSong;
+  }
+  set lastRandomSong(lastRandomSong){
+    this._lastRandomSong = lastRandomSong;
     return this;
   }
 
@@ -140,7 +149,7 @@ export class PlayerController{
     });
 
     this._audioEl.addEventListener("emptied", () =>{
-      this.setSongProgress(0, "0:00");
+      this.setUiSongProgress(0, "0:00");
     });
 
     this._audioEl.addEventListener("ended", () =>{
@@ -196,7 +205,6 @@ export class PlayerController{
         default:
           break;
       }
-
     });
   }
 
@@ -222,31 +230,53 @@ export class PlayerController{
   }
 
   skipBackward(){
-    let index = this.songsData.findIndex(song => song.id === this.currentSongPlaying) - 1;
-    index = index < 0 ? 0 : index;
-    const {id} = this.songsData[index];
-
-    this.setSelectedSong(id);
-    this.startSong();
+    if(parseInt(this.getSongProgress().progress) <= 2){
+      this.skip("backward");
+    }else{
+      this.restartSong();
+    }
   }
 
   skipForward(){
-    
-    let index = this.songsData.findIndex(song => song.id === this.currentSongPlaying) + 1;
-    index = index > this.songsData.length ? this.songsData.length : index;
+    this.skip();
+  }
 
-    const {id} = this.songsData[index];
+  skip(action){
 
-    if(!this.itInLoop()){
-      this.setSelectedSong(id);
-    }
+    let index;
+    let songId;
 
+    if(action == "backward"){
+
+        index = this.songsData.findIndex(song => song.id === this.currentSongPlaying) - 1;
+        index = index < 0 ? 0 : index;
+        songId = this.songsData[index].id;
+      
+      }else{
+
+        if(this.songPlayerInShuffle){
+
+          index = this.getRandomSong();
+          songId = this.songsData[index].id;
+        }else{
+
+          index = this.songsData.findIndex(song => song.id === this.currentSongPlaying) + 1;
+          index = index > this.songsData.length ? this.songsData.length : index;
+          songId = this.songsData[index].id;
+        }
+      }
+
+    this.setSelectedSong(songId);
     this.startSong();
   }
 
   startSong(){
     this.preparePlayerData();
     this.play();
+  }
+
+  restartSong(){
+    this._audioEl.currentTime = 0;
   }
 
   getSelectedSong(){
@@ -293,8 +323,6 @@ export class PlayerController{
       currentTime
     } = this.getSongProgress();
 
-    console.log(progress);
-
     this._songCurrentTimeEl.innerText = currentTime;
     this._songProgressBarEl.value = progress;
   }
@@ -311,7 +339,7 @@ export class PlayerController{
     };
   }
 
-  setSongProgress(progress, time){
+  setUiSongProgress(progress, time){
 
     this._songCurrentTimeEl.innerText = time;
     this._songProgressBarEl.value = progress;
@@ -334,7 +362,6 @@ export class PlayerController{
     if(boolean){
       this._audioEl.loop = true;
       this._setLoopBtnEl.classList.add("active");
-      this.toggleShuffle(false);
     }else{
       this._audioEl.loop = false;
       this._setLoopBtnEl.classList.remove("active");
@@ -346,7 +373,6 @@ export class PlayerController{
     if(boolean){
       this.songPlayerInShuffle = true;
       this._setShuffleBtnEl.classList.add("active");
-      this.toggleLoop(false);
     }else{
       this.songPlayerInShuffle = false;
       this._setShuffleBtnEl.classList.remove("active");
@@ -374,5 +400,17 @@ export class PlayerController{
 
   itInLoop(){
     return this._audioEl.loop;
+  }
+
+  getRandomSong(){
+
+    let randomSong = parseInt(Math.random() * ((this.songsData.length - 1) - 0) + 0);
+    
+    if(randomSong === this.lastRandomSong){
+      return this.getRandomSong();
+    }
+    
+    this.lastRandomSong = randomSong;
+    return this.lastRandomSong;
   }
 }
