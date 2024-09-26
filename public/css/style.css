@@ -30,26 +30,7 @@ button{
     all: unset;
     display: inline-block;
     cursor: pointer;
-}
-
-progress{
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    border: none;
-}
-
-progress::-webkit-progress-bar{
-    background-color: transparent;
-}
-
-progress::-webkit-progress-value{
-    background-color: transparent;
-}
-progress::-moz-progress-bar{
-    background-color: transparent;
-}
-  
+} 
 
 main#main{
     display: flex;
@@ -256,28 +237,9 @@ li.item-menu a{
     color: var(--secondary-color);
 }
 
-.default-progress-bar{
-    height: 6px;
-    border-radius: 10px;
-    background-color: #4D4D4D;
-}
-
-.default-progress-bar::-webkit-progress-value{
-    border: 10px;
-    background-color: #1db954;
-}
-
-#progress-bar-container #desktop-progress-bar{
-    width: 500px;
-}
-
 #player-secondary-controls{
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 0 10px;
-}
-
-#player-secondary-controls #desktop-volume-progress-bar{
-    width: 100px;
 }

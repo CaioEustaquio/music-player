@@ -9,6 +9,7 @@
   <meta http-equiv='pragma' content='no-cache'>
   <title>Music player</title>
   <link rel="stylesheet" href="public/css/style.css">
+  <link rel="stylesheet" href="public/css/progress-bar.css">
 </head>
 <body>
   <header id="header"></header>
@@ -86,13 +87,13 @@
         </div>
         <div id="progress-bar-container">
           <p><span id="current-time">0:00</span></p>
-          <progress id="desktop-progress-bar" class="default-progress-bar" max="100" value=""></progress>
+          <progress id="desktop-progress-bar" class="default-progress-bar" max="100" value="" style="width: 500px;"></progress>
           <p><span id="total-time"></span></p>
         </div>
       </section>
       <section id="player-secondary-controls">
         <button class="icon-button"><i data-lucide="volume-2"></i></button>
-        <progress id="desktop-volume-progress-bar" class="default-progress-bar" max="100" value="63"></progress>
+        <progress id="desktop-volume-progress-bar" class="default-progress-bar" max="100" value="63" style="width: 100px;"></progress>
       </section>
     </section>
   </footer>
