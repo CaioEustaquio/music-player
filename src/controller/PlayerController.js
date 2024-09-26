@@ -1,5 +1,6 @@
 import {Fetch} from "./../utils/Fetch.js";
 import {Functions} from "./../utils/Functions.js";
+import { ProgressBarController } from "./ProgressBarController.js";
 
 export class PlayerController{
 
@@ -21,12 +22,15 @@ export class PlayerController{
     this._setShuffleBtnEl = document.querySelector("button#shuffle-btn");
     this._setLoopBtnEl = document.querySelector("button#repeat-btn");
     this._audioEl = document.querySelector("#song-audio");
+    this._volumeProgressBarEl = document.querySelector("progress#desktop-volume-progress-bar");
     
     this._songsData;
     this._currentSongPlaying;
     this._playerInterval;
     this._songPlayerInShuffle = false;
     this._lastRandomSong;
+    this._mainSongProgressBar = new ProgressBarController(this._songProgressBarEl, true);
+    this._mainVolumeProgressBar = new ProgressBarController(this._volumeProgressBarEl, true);
 
     this.init();
   }
@@ -82,9 +86,8 @@ export class PlayerController{
     this.addKeyboardEvents();
   }
 
+  // rendering songs on table
   render(){
-
-    // rendering songs on table
 
     // counter
     let orderCounter = 1;
@@ -133,6 +136,10 @@ export class PlayerController{
 
   addPlayerEvents(){
 
+    document.body.addEventListener('dragover', (e) => {
+      e.preventDefault();  // Permite o arrastar em qualquer lugar do body
+    });
+
     this._audioEl.addEventListener("play", () =>{
 
       this.togglePlayerVisible(true);
@@ -149,7 +156,8 @@ export class PlayerController{
     });
 
     this._audioEl.addEventListener("emptied", () =>{
-      this.setUiSongProgress(0, "0:00");
+      this.setCurrentTimeProgress("0:00");
+      this._mainSongProgressBar.setProgressValue(0);
     });
 
     this._audioEl.addEventListener("ended", () =>{
@@ -189,14 +197,16 @@ export class PlayerController{
         this.toggleLoop(true);
       }
     });
+
+    this._songProgressBarEl.addEventListener("jump", (e) =>{
+      this.setCurrentProgress(e.detail.progress);
+    });
   }
 
   addKeyboardEvents(){
     
     document.addEventListener("keypress", (e) =>{
-
       e.preventDefault();
-
       switch(e.code){
 
         case("Space"):
@@ -324,7 +334,7 @@ export class PlayerController{
     } = this.getSongProgress();
 
     this._songCurrentTimeEl.innerText = currentTime;
-    this._songProgressBarEl.value = progress;
+    this._mainSongProgressBar.setProgressValue(progress);
   }
 
   getSongProgress(){
@@ -339,10 +349,13 @@ export class PlayerController{
     };
   }
 
-  setUiSongProgress(progress, time){
+  setCurrentProgress(progress){
+    progress = ((progress / 100) * this._audioEl.duration);
+    this._audioEl.currentTime = progress;
+  }
 
+  setCurrentTimeProgress(time){
     this._songCurrentTimeEl.innerText = time;
-    this._songProgressBarEl.value = progress;
   }
 
   setPlayerInterval(){

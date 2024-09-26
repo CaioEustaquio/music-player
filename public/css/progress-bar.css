@@ -1,0 +1,32 @@
+progress{
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+}
+
+progress::-webkit-progress-bar{
+  background-color: transparent;
+}
+
+progress::-webkit-progress-value{
+  background-color: transparent;
+}
+progress::-moz-progress-bar{
+  background-color: transparent;
+}
+
+.default-progress-bar{
+  height: 6px;
+  border-radius: 10px;
+  background-color: #4D4D4D;
+}
+
+.default-progress-bar::-webkit-progress-value{
+  border: 10px;
+  background-color: #1db954;
+}
+
+progress.dragging{
+  cursor: pointer !important;
+}
