@@ -30,11 +30,11 @@ export class PlayerController{
   private _audioEl: HTMLAudioElement | null;
   private _volumeProgressBarEl: HTMLProgressElement | null;
 
-  private _songsData: any; // Defina o tipo apropriado para _songsData
-  private _currentSongPlaying: any; // Defina o tipo apropriado para _currentSongPlaying
-  private _playerInterval: NodeJS.Timeout | null; // Se for um timer, use NodeJS.Timeout
+  private _songsData: any;
+  private _currentSongPlaying: any;
+  private _playerInterval: NodeJS.Timeout | null;
   private _songPlayerInShuffle: boolean;
-  private _lastRandomSong: number; // Defina o tipo apropriado para _lastRandomSong
+  private _lastRandomSong: number;
   private _mainSongProgressBar: ProgressBarController;
   private _mainVolumeProgressBar: ProgressBarController;
 
@@ -82,10 +82,10 @@ export class PlayerController{
 
   // rendering songs on table
   render(): void {
-    // contador
+    // counter
     let orderCounter: number = 1;
   
-    this._songsData.map((song: any) => { // Substitua 'any' pelo tipo apropriado
+    this._songsData.map((song: any) => {
       let trContent: string = `
         <tr data-id="${song.id}" class="data-row">
           <td>${orderCounter}</td>
@@ -102,7 +102,7 @@ export class PlayerController{
   }
 
   addGridEvents(): void {
-    // eventos das linhas
+    // row events
     const rows: NodeListOf<HTMLTableRowElement> = document.querySelectorAll("tr.data-row");
   
     rows.forEach((row) => {
@@ -295,14 +295,12 @@ export class PlayerController{
   }
 
   applySelectedStyle(songId: string):void{
-    // Converter NodeList para Array usando Array.from()
     const playingElements = Array.from(this._tableBodyEl!.querySelectorAll(`tr.song-playing`));
   
     playingElements.forEach(el => {
       el.classList.remove("song-playing");
     });
   
-    // Adicionar a classe "song-playing" ao elemento correto
     const selectedElement = this._tableBodyEl!.querySelector(`tr[data-id="${songId}"]`);
     if (selectedElement) {
       selectedElement.classList.add("song-playing");
