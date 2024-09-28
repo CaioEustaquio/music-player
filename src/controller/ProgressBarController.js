@@ -4,8 +4,7 @@ export class ProgressBarController{
 
     this._progressBarEl = progressBarEl;
     this._progressBarWidth = Number(progressBarEl.style.width.replace("px", ""));
-    draggable = draggable ? 'true' : 'false';
-    this._progressBarEl.setAttribute('draggable', draggable);
+    this._progressBarEl.setAttribute('draggable', draggable ? 'true' : 'false');
     this._customDragImg = new Image();
 
     // events

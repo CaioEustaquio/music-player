@@ -240,7 +240,7 @@ export class PlayerController{
   }
 
   skipBackward(){
-    if(parseInt(this.getSongProgress().progress) <= 2){
+    if(parseInt(this.getSongProgress()) <= 2){
       this.skip("backward");
     }else{
       this.restartSong();
@@ -327,26 +327,23 @@ export class PlayerController{
   }
 
   updateSongProgressUi(){
-
-    let {
-      progress,
-      currentTime
-    } = this.getSongProgress();
+    const progress = this.getSongProgress();
+    const currentTime = this.getFormattedSongTime();
 
     this._songCurrentTimeEl.innerText = currentTime;
     this._mainSongProgressBar.setProgressValue(progress);
   }
 
   getSongProgress(){
+    return ((this._audioEl.currentTime / this._audioEl.duration) * 100);
+  }
 
+  getFormattedSongTime(){
     let minutes = Functions.toMinutes(this._audioEl.currentTime);
     let seconds = Functions.toSeconds(minutes, this._audioEl.currentTime);
-    let formatedCurrentTime = `${minutes}:${Functions.padTo2Digits(seconds)}`
+    let formatedCurrentTime = `${minutes}:${Functions.padTo2Digits(seconds)}`;
 
-    return {
-      progress: ((this._audioEl.currentTime / this._audioEl.duration) * 100),
-      currentTime: formatedCurrentTime
-    };
+    return formatedCurrentTime;
   }
 
   setCurrentProgress(progress){
