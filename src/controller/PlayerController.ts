@@ -1,5 +1,5 @@
-import {Functions} from "../utils/Functions";
-import { ProgressBarController } from "./ProgressBarController";
+import {Functions} from "../utils/Functions.js";
+import { ProgressBarController } from "./ProgressBarController.js";
 
 interface Song {
   id:string,
@@ -63,8 +63,8 @@ export class PlayerController{
     this._playerInterval = null;
     this._songPlayerInShuffle = false;
     this._lastRandomSong = 0;
-    this._mainSongProgressBar = new ProgressBarController(this._songProgressBarEl, true);
-    this._mainVolumeProgressBar = new ProgressBarController(this._volumeProgressBarEl, true);
+    this._mainSongProgressBar = new ProgressBarController(this._songProgressBarEl!, true);
+    this._mainVolumeProgressBar = new ProgressBarController(this._volumeProgressBarEl!, true);
 
     this.init();
   }
