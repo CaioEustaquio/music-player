@@ -124,5 +124,95 @@
       "duration": "2:00",
       "image": "./files/thumbnail/long-way-from-home-zentaro-theme.png",
       "file": "./files/music/long-way-from-home-zentaro-theme.mp3"
+  },
+  {
+      "id": "019245ec-9284-76b0-b871-a8ad7f189950",
+      "title":"Pump it",
+      "author": "The Black Eyed Peas",
+      "singer": "",
+      "duration": "3:34",
+      "image": "./files/thumbnail/pump-it.jpeg",
+      "file": "./files/music/pump-it.mp3"
+  },
+  {
+      "id": "019245fd-65b5-7373-9278-05c80291da23",
+      "title":"Atlas",
+      "author": "Good Kid",
+      "singer": "",
+      "duration": "2:24",
+      "image": "./files/thumbnail/good-kid.png",
+      "file": "./files/music/good-kid.mp3"
+  },
+  {
+      "id": "01924600-22df-77fd-9470-0e45a93582d9",
+      "title":"Heavy Is The Crown",
+      "author": "Linkin Park",
+      "singer": "",
+      "duration": "2:24",
+      "image": "./files/thumbnail/heavy-is-the-crown.png",
+      "file": "./files/music/heavy-is-the-crown.mp3"
+  },
+  {
+      "id": "01924607-3d27-78a1-ad66-d0f2f465236a",
+      "title":"Charmer",
+      "author": "Stray Kids",
+      "singer": "",
+      "duration": "3:09",
+      "image": "./files/thumbnail/charmer.png",
+      "file": "./files/music/charmer.mp3"
+  },
+  {
+    "id": "0192460a-682c-7c2d-aa5b-c101a0d3ffe3",
+    "title":"I'm Not a Vampire",
+    "author": "Falling In Reverse",
+    "singer": "",
+    "duration": "4:51",
+    "image": "./files/thumbnail/im-not-a-vampire.png",
+    "file": "./files/music/im-not-a-vampire.mp3"
+  },
+  {
+    "id": "01924612-45b8-7a91-82fd-623cec381150",
+    "title":"Stronger",
+    "author": "The Score",
+    "singer": "",
+    "duration": "3:11",
+    "image": "./files/thumbnail/stronger.png",
+    "file": "./files/music/stronger.mp3"
+  },
+  {
+    "id": "0192462e-0d12-7920-b346-62f4d994b1ce",
+    "title":"Heavy Dirty Soul",
+    "author": "21 Pilots",
+    "singer": "",
+    "duration": "4:12",
+    "image": "./files/thumbnail/heavy-dirty-soul.png",
+    "file": "./files/music/heavy-dirty-soul.mp3"
+  },
+  {
+    "id": "01924631-7af2-7f32-b847-cf56349b552c",
+    "title":"365",
+    "author": "Charli xcx",
+    "singer": "",
+    "duration": "3:23",
+    "image": "./files/thumbnail/365.png",
+    "file": "./files/music/365.mp3"
+  },
+  {
+    "id": "0192463d-d5dd-7f80-8bbc-c90f5f5f505b",
+    "title":"Tuin Das Universitaria Pau e Lazer",
+    "author": "MC VN CRIA & MC VK DA VS DJ MK DA DZ7 DJ JOTA ORIGINAL",
+    "singer": "",
+    "duration": "2:54",
+    "image": "./files/thumbnail/tuin-das-universitaria-pau-e-lazer.png",
+    "file": "./files/music/tuin-das-universitaria-pau-e-lazer.mp3"
+  },
+  {
+    "id": "01924656-bd5f-7c13-a766-e4a153835722",
+    "title":"Poesia Acústica #2: Sobre Nós",
+    "author": "Delacruz, Maria, Ducon, Luiz Lins, Diomedes, BK, Kayuá, Tiago Mac, Salve Malak, and Slim Beat",
+    "singer": "",
+    "duration": "8:02",
+    "image": "./files/thumbnail/poesia-acustica-2-sobre-nos.png",
+    "file": "./files/music/poesia-acustica-2-sobre-nos.mp3"
   }
 ]
