@@ -95,11 +95,11 @@ export class PlayerController{
 
       let trContent = `
         <tr data-id="${song.id}" class="data-row">
-          <td>${orderCounter}</td>
-          <td>${song.title}</td>
-          <td>${song.author}</td>
-          <td>${song.singer}</td>
-          <td>${song.duration}</td>
+          <td><div class="data-cell">${orderCounter}</div></td>
+          <td><div class="data-cell" title="${song.title}">${song.title}</div></td>
+          <td><div class="data-cell" title="${song.author}">${song.author}</div></td>
+          <td><div class="data-cell" title="${song.singer}">${song.singer}</div></td>
+          <td><div class="data-cell" title="${song.duration}">${song.duration}</div></td>
         </tr>
       `;
       this._tableBodyEl.innerHTML += trContent;
