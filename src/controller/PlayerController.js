@@ -108,35 +108,20 @@ export class PlayerController{
   }
 
   addGridEvents(){
-
     // rows events
     [...document.querySelectorAll("tr.data-row")].map(row =>{
 
-      // clone and replace the element to remove all listeners 
-      const clonedRow = row.cloneNode(true);
-      row.replaceWith(clonedRow);
-
-      // validate user screen, if mobile add click else dblclick
-      if(window.matchMedia('(max-width: 450px)').matches){
-        
-        clonedRow.addEventListener('click', () =>{
-          this.setSelectedSong(row.dataset.id);
-          this.startSong();
-        });
-      }else{
-        clonedRow.addEventListener('dblclick', (e) =>{
-
+        row.addEventListener('dblclick', (e) =>{
           this.setSelectedSong(row.dataset.id);
           this.startSong();
         });
       }
-    });
-  }
+  )};
 
   addPlayerEvents(){
 
     document.body.addEventListener('dragover', (e) => {
-      e.preventDefault();  // Permite o arrastar em qualquer lugar do body
+      e.preventDefault();
     });
 
     this._audioEl.addEventListener("play", () =>{
