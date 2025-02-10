@@ -121,7 +121,7 @@ export class PlayerController{
   addPlayerEvents(){
 
     document.body.addEventListener('dragover', (e) => {
-      e.preventDefault();  // Permite o arrastar em qualquer lugar do body
+      e.preventDefault();
     });
 
     this._audioEl.addEventListener("play", () =>{
