@@ -22,11 +22,15 @@ progress::-moz-progress-bar{
   background-color: #4D4D4D;
 }
 
+.default-progress-bar:hover{
+  cursor: pointer;
+}
+
 .default-progress-bar::-webkit-progress-value{
   border: 10px;
   background-color: #1db954;
 }
 
-progress.dragging{
+/* progress.dragging{
   cursor: pointer !important;
-}
+} */
