@@ -22,6 +22,8 @@ export class PlayerController{
     this._setLoopBtnEl = document.querySelector("button#repeat-btn");
     this._audioEl = document.querySelector("#song-audio");
     this._volumeProgressBarEl = document.querySelector("progress#desktop-volume-progress-bar");
+    this._volumeBtn = document.querySelector("#volume-button");
+    this._volumeIcon = this._volumeBtn.querySelector("img");
     
     this._songsData;
     this._currentSongPlaying;
@@ -29,7 +31,7 @@ export class PlayerController{
     this._songPlayerInShuffle = false;
     this._lastRandomSong;
     this._mainSongProgressBar = new ProgressBarController(this._songProgressBarEl, true);
-    this._mainVolumeProgressBar = new ProgressBarController(this._volumeProgressBarEl, true);
+    this._mainVolumeProgressBar = new ProgressBarController(this._volumeProgressBarEl, true, true);
 
     this.init();
   }
@@ -83,6 +85,7 @@ export class PlayerController{
     this.addGridEvents();
     this.addPlayerEvents();
     this.addKeyboardEvents();
+    console.log(this.getPlayerVolume());
   }
 
   // rendering songs on table
@@ -184,6 +187,11 @@ export class PlayerController{
 
     this._songProgressBarEl.addEventListener("jump", (e) =>{
       this.setCurrentProgress(e.detail.progress);
+    });
+
+    this._volumeProgressBarEl.addEventListener("jump", (e) =>{
+      this.updateVolumeImage(e.detail.progress);
+      this.setPlayerVolume(e.detail.progress);
     });
   }
 
@@ -412,5 +420,32 @@ export class PlayerController{
     
     this.lastRandomSong = randomSong;
     return this.lastRandomSong;
+  }
+
+  getPlayerVolume(){
+    return this._audioEl.volume;
+  }
+
+  setPlayerVolume(volume){
+    volume = (volume / 100);
+    this._audioEl.volume = volume;
+  }
+
+  updateVolumeImage(volume){
+    
+    const path = '/public/images/icons';
+    // 4 states - muted | low | medium | high
+    let file = '';
+    if(volume === 0){
+      file = `${path}/volume-x.svg`;
+    }else if(volume > 0 && volume <= 25){
+      file = `${path}/volume.svg`;
+    }else if(volume >= 26 && volume <= 50){
+      file = `${path}/volume-1.svg`;
+    }else{
+      file = `${path}/volume-2.svg`;
+    }
+
+    this._volumeIcon.src = file
   }
 }
