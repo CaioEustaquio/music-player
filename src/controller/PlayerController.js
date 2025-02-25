@@ -431,21 +431,30 @@ export class PlayerController{
     this._audioEl.volume = volume;
   }
 
-  updateVolumeImage(volume){
-    
-    const path = '/public/images/icons';
-    // 4 states - muted | low | medium | high
-    let file = '';
-    if(volume === 0){
-      file = `${path}/volume-x.svg`;
-    }else if(volume > 0 && volume <= 25){
-      file = `${path}/volume.svg`;
-    }else if(volume >= 26 && volume <= 50){
-      file = `${path}/volume-1.svg`;
-    }else{
-      file = `${path}/volume-2.svg`;
+  updateVolumeImage(volume) {
+    if (volume < 0 || volume > 100){
+      return;
     }
-
-    this._volumeIcon.src = file
+  
+    const volumeIcons = {
+      muted: 'volume-x.svg',
+      low: 'volume.svg',
+      medium: 'volume-1.svg',
+      high: 'volume-2.svg',
+    };
+  
+    let state;
+    if (volume === 0){
+      state = 'muted';
+    } else if (volume <= 25){
+      state = 'low';
+    } else if (volume <= 50){
+      state = 'medium';
+    } else {
+      state = 'high';
+    }
+  
+    const path = './public/images/icons';
+    this._volumeIcon.src = `${path}/${volumeIcons[state]}`;
   }
 }
