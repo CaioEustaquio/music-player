@@ -1,9 +1,10 @@
 export class ProgressBarController{
 
-  constructor(progressBarEl, draggable = false){
+  constructor(progressBarEl, draggable = false, changeValueWhileDrag = false){
 
     this._progressBarEl = progressBarEl;
     this._progressBarWidth = Number(progressBarEl.style.width.replace("px", ""));
+    this._changeValueWhileDrag = changeValueWhileDrag;
     this._progressBarEl.setAttribute('draggable', draggable ? 'true' : 'false');
     this._customDragImg = new Image();
 
@@ -42,6 +43,10 @@ export class ProgressBarController{
       const progress = this.getCurrentBarValue(e.offsetX);
       this._progressBarEl.value = progress;
       this._jumpEvent.detail.progress = progress;
+
+      if(this._changeValueWhileDrag){
+        this._progressBarEl.dispatchEvent(this._jumpEvent);
+      }
     });
 
     this._progressBarEl.addEventListener("dragend", (e) =>{
