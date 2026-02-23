@@ -19,7 +19,21 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "outDir": "dist",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "paths": {
+      "@controllers/*": [
+        "src/controllers/*"
+      ],
+      "@appTypes/*": [
+        "src/types/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@data/*": [
+        "src/data/*"
+      ]
+    }
   },
   "include": [
     "src"

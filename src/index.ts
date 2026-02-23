@@ -1,4 +1,4 @@
-import { PlayerController } from "./controller/PlayerController";
+import { PlayerController } from "./controllers/PlayerController";
 import {
   createIcons,
   icons

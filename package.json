@@ -8,15 +8,16 @@
     "url": "git+https://github.com/CaioEustaquio/music-player.git"
   },
   "scripts": {
-    "dev": "esbuild src/index.ts --bundle --format=esm --outdir=dist --sourcemap --watch",
-    "build": "esbuild src/index.ts --bundle --format=esm --outdir=dist --minify"
+    "build": "node build.ts",
+    "dev": "node build.ts --watch"
   },
   "keywords": [
     "music-player",
     "html",
     "css",
-    "js",
-    "front-end"
+    "ts",
+    "front-end",
+    "esbuild"
   ],
   "author": "CaioEustaquio",
   "license": "MIT",
