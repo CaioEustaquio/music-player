@@ -1,6 +1,7 @@
-import { Functions } from "../utils/Functions";
-import { ProgressBarController } from "./ProgressBarController";
-import { Song } from "./../types/song";
+import { Functions } from "@utils/Functions";
+import { ProgressBarController } from "src/controllers/ProgressBarController";
+import { Song } from "@appTypes/song";
+import mockSongs from "@data/mockSongs.json"
 
 type VolumeIcons = {
   muted: string;
@@ -241,14 +242,7 @@ export class PlayerController {
 
   async fetchSongs(): Promise<Song[]> {
     try {
-      const response = await fetch('./data/data.json');
-
-      if (!response.ok) {
-        throw new Error('Error to fetch songs');
-      }
-
-      const data = await response.json();
-      return data;
+      return mockSongs as Song[];
 
     } catch (error: any) {
       console.error(error.message);
