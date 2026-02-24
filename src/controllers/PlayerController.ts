@@ -1,5 +1,5 @@
 import { Functions } from "@utils/Functions";
-import { ProgressBarController } from "src/controllers/ProgressBarController";
+import { ProgressBarController } from "@controllers/ProgressBarController";
 import { Song } from "@appTypes/song";
 import mockSongs from "@data/mockSongs.json"
 
