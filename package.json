@@ -8,8 +8,8 @@
     "url": "git+https://github.com/CaioEustaquio/music-player.git"
   },
   "scripts": {
-    "build": "node build.ts",
-    "dev": "node build.ts --watch"
+    "build": "vite build",
+    "dev": "vite"
   },
   "keywords": [
     "music-player",
