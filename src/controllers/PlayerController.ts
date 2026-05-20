@@ -1,7 +1,7 @@
 import { Functions } from "@utils/Functions";
+import { SongTableController } from "@controllers/SongTableController";
 import { ProgressBarController } from "@controllers/ProgressBarController";
 import { Song } from "@appTypes/song";
-import mockSongs from "@data/mockSongs.json"
 
 type VolumeIcons = {
   muted: string;
@@ -11,8 +11,7 @@ type VolumeIcons = {
 }
 
 export class PlayerController {
-
-  private _tableBodyEl: HTMLTableSectionElement;
+  private _songTable: SongTableController;
   private _playerContainerEl: HTMLElement;
   private _songThumbnailEl: HTMLImageElement;
   private _songTitleEl: HTMLHeadingElement;
@@ -30,18 +29,17 @@ export class PlayerController {
   private _volumeProgressBarEl: HTMLProgressElement;
   private _volumeBtn: HTMLButtonElement;
   private _volumeIcon: HTMLImageElement;
-  private _songsData: Song[];
-  private _currentSongPlaying: string;
+  private _currentSongPlayingId: string;
   private _playerInterval: ReturnType<typeof setInterval> | null = null;
   private _songPlayerInShuffle: boolean;
   private _mainSongProgressBar: ProgressBarController;
   private _mainVolumeProgressBar: ProgressBarController;
-  private _lastRandomSong: number;
+
 
   constructor() {
 
     // capturing elements
-    this._tableBodyEl = document.querySelector("#desktop-songs-table tbody") as HTMLTableSectionElement;
+    this._songTable = new SongTableController();
     this._playerContainerEl = document.querySelector("#desktop-player-controls") as HTMLElement;
     this._songThumbnailEl = document.querySelector("img#song-thumbnail") as HTMLImageElement;
     this._songTitleEl = document.querySelector("h2#song-title") as HTMLHeadingElement;
@@ -60,28 +58,23 @@ export class PlayerController {
     this._volumeBtn = document.querySelector("#volume-button") as HTMLButtonElement;
     this._volumeIcon = this._volumeBtn.querySelector("img") as HTMLImageElement;
 
-    this._songsData = [];
-    this._currentSongPlaying = "";
+    this._currentSongPlayingId = "";
     this._songPlayerInShuffle = false;
     this._mainSongProgressBar = new ProgressBarController(this._songProgressBarEl, true);
     this._mainVolumeProgressBar = new ProgressBarController(this._volumeProgressBarEl, true, true);
-    this._lastRandomSong = 0;
 
     this.init();
   }
 
-  get songsData(): Song[] {
-    return this._songsData;
-  }
-  set songsData(songsData) {
-    this._songsData = songsData;
+  get songTable(): SongTableController {
+    return this._songTable;
   }
 
-  get currentSongPlaying(): string {
-    return this._currentSongPlaying;
+  get currentSongPlayingId(): string {
+    return this._currentSongPlayingId;
   }
-  set currentSongPlaying(currentSongPlaying: string) {
-    this._currentSongPlaying = currentSongPlaying;
+  set currentSongPlayingId(currentSongPlayingId: string) {
+    this._currentSongPlayingId = currentSongPlayingId;
   }
 
   get playerInterval(): ReturnType<typeof setInterval> | null {
@@ -98,107 +91,33 @@ export class PlayerController {
     this._songPlayerInShuffle = songPlayerInShuffle;
   }
 
-  get lastRandomSong(): number {
-    return this._lastRandomSong;
-  }
-  set lastRandomSong(lastRandomSong) {
-    this._lastRandomSong = lastRandomSong;
-  }
-
-  async init() {
-
-    const songs: Song[] = await this.fetchSongs();
-    this.songsData = songs;
-
-    this.render();
-    this.addGridEvents();
+  async init(): Promise<void> {
     this.addPlayerEvents();
     this.addKeyboardEvents();
   }
 
-  // rendering songs on table
-  render(): void {
-
-    // counter
-    let orderCounter = 1;
-
-    this.songsData.map(song => {
-
-      let trContent = `
-        <tr data-id="${song.id}" class="data-row">
-          <td><div class="data-cell">${orderCounter}</div></td>
-          <td><div class="data-cell" title="${song.title}">${song.title}</div></td>
-          <td><div class="data-cell" title="${song.author}">${song.author}</div></td>
-          <td><div class="data-cell" title="${song.singer}">${song.singer}</div></td>
-          <td><div class="data-cell" title="${song.duration}">${song.duration}</div></td>
-        </tr>
-      `;
-      this._tableBodyEl.innerHTML += trContent;
-      orderCounter++;
-    });
-  }
-
-  addGridEvents(): void {
-    // rows events
-    [...document.querySelectorAll<HTMLTableRowElement>("tr.data-row")].map((row) => {
-
-      row.addEventListener('dblclick', () => {
-        if (!row.dataset.id) return
-        this.setSelectedSong(row.dataset.id);
-        this.startSong();
-      });
-    }
-    )
-  };
-
   addPlayerEvents() {
-
-    document.body.addEventListener('dragover', (e: MouseEvent) => {
-      e.preventDefault();
-    });
-
+    document.body.addEventListener('dragover', (e: MouseEvent) => e.preventDefault());
     this._audioEl.addEventListener("play", () => {
-
       this.togglePlayerVisible(true);
-
       this.changeSongStateIcon();
       this.clearPlayerInterval();
       this.setPlayerInterval();
     });
-
     this._audioEl.addEventListener("pause", () => {
-
       this.changeSongStateIcon();
       this.clearPlayerInterval();
     });
-
     this._audioEl.addEventListener("emptied", () => {
       this.setCurrentTimeProgress("0:00");
       this._mainSongProgressBar.setProgressValue(0);
     });
-
-    this._audioEl.addEventListener("ended", () => {
-      this.skipForward();
-    });
-
-    this._playBtnEl.addEventListener("click", () => {
-      this.play();
-    });
-
-    this._pauseBtnEl.addEventListener("click", () => {
-      this.pause();
-    });
-
-    this._skipBackBtnEl.addEventListener("click", () => {
-      this.skipBackward();
-    });
-
-    this._skipForwardBtnEl.addEventListener("click", () => {
-      this.skipForward();
-    });
-
+    this._audioEl.addEventListener("ended", () => this.skipForward());
+    this._playBtnEl.addEventListener("click", () => this.play())
+    this._pauseBtnEl.addEventListener("click", () => this.pause());
+    this._skipBackBtnEl.addEventListener("click", () => this.skipBackward());
+    this._skipForwardBtnEl.addEventListener("click", () => this.skipForward());
     this._setShuffleBtnEl.addEventListener("click", () => {
-
       if (this.songPlayerInShuffle) {
         this.toggleShuffle(false);
       } else {
@@ -207,32 +126,31 @@ export class PlayerController {
     });
 
     this._setLoopBtnEl.addEventListener("click", () => {
-
-      if (this._audioEl.loop) {
+      if (this.itInLoop()) {
         this.toggleLoop(false);
       } else {
         this.toggleLoop(true);
       }
     });
 
-    this._songProgressBarEl.addEventListener("jump", (e: CustomEventInit) => {
-      this.setCurrentProgress(e.detail.progress);
-    });
-
+    this._songProgressBarEl.addEventListener("jump", (e: CustomEventInit) => this.setCurrentProgress(e.detail.progress));
     this._volumeProgressBarEl.addEventListener("jump", (e: CustomEventInit) => {
       this.updateVolumeImage(e.detail.progress);
       this.setPlayerVolume(e.detail.progress);
     });
+    this.songTable.body.addEventListener("song-selected", () => {
+      this.preparePlayerData(this.songTable.getSelectedSongData());
+      this.play();
+    })
   }
 
   addKeyboardEvents() {
-
-    document.addEventListener("keypress", (e) => {
+    document.addEventListener("keypress", (e: KeyboardEvent) => {
       e.preventDefault();
       switch (e.code) {
-
         case ("Space"):
-          if (this.hasSelectedSong()) this.isPaused() ? this.play() : this.pause();
+          console.log("Aqui")
+          if (this.songTable.selectedRowEl) this.isPaused() ? this.play() : this.pause();
           break;
         default:
           break;
@@ -240,19 +158,9 @@ export class PlayerController {
     });
   }
 
-  async fetchSongs(): Promise<Song[]> {
-    try {
-      return mockSongs as Song[];
-
-    } catch (error: any) {
-      console.error(error.message);
-      return [];
-    };
-  }
-
   play(): void {
     try {
-      if (!this.hasSelectedSong) {
+      if (!this.songTable.selectedRowEl) {
         throw new Error("Song not selected")
       }
       this._audioEl.play();
@@ -268,47 +176,15 @@ export class PlayerController {
 
   skipBackward(): void {
     if (this.getSongProgress() <= 2) {
-      this.skip("backward");
+      this.songTable.skip("backward", this.songPlayerInShuffle);
+      this.play();
     } else {
       this.restartSong();
     }
   }
 
   skipForward(): void {
-    this.skip("forward");
-  }
-
-  skip(action: 'backward' | 'forward') {
-
-    let index;
-    let songId;
-
-    if (action == "backward") {
-
-      index = this.songsData.findIndex((song: Song) => song.id === this.currentSongPlaying) - 1;
-      index = index < 0 ? 0 : index;
-      songId = this.songsData[index].id;
-
-    } else {
-
-      if (this.songPlayerInShuffle) {
-
-        index = this.getRandomSong();
-        songId = this.songsData[index].id;
-      } else {
-
-        index = this.songsData.findIndex((song: Song) => song.id === this.currentSongPlaying) + 1;
-        index = index > this.songsData.length ? this.songsData.length : index;
-        songId = this.songsData[index].id;
-      }
-    }
-
-    this.setSelectedSong(songId);
-    this.startSong();
-  }
-
-  async startSong() {
-    await this.preparePlayerData();
+    this.songTable.skip("forward", this.songPlayerInShuffle);
     this.play();
   }
 
@@ -316,51 +192,22 @@ export class PlayerController {
     this._audioEl.currentTime = 0;
   }
 
-  async getSelectedSong(): Promise<Song | null> {
-    const song = await this.songsData.find((song: Song) => {
-      return song.id === this.currentSongPlaying;
-    });
-
-    return song ?? null;
-  }
-
-
-  setSelectedSong(songId: string) {
-    this.applySelectedStyle(songId)
-    this.currentSongPlaying = songId;
-  }
-
-  applySelectedStyle(songId: string) {
-
-    [...this._tableBodyEl.querySelectorAll<HTMLTableRowElement>(`tr.song-playing`)].map(el => {
-      el.classList.remove("song-playing");
-    });
-
-    this._tableBodyEl.querySelector<HTMLTableRowElement>(`tr[data-id="${songId}"]`)
-      ?.classList
-      .add("song-playing")
-  }
-
   togglePlayerVisible(value: boolean = true) {
-
     if (value) {
       this._playerContainerEl.classList.add("active");
     } else {
       this._playerContainerEl.classList.remove("active");
     }
-
     this.changeSongStateIcon()
   }
 
-  async preparePlayerData(): Promise<void> {
-    const song = await this.getSelectedSong();
-    if (song) {
-      this._songThumbnailEl.src = song.image;
-      this._songTitleEl.innerText = song.title;
-      this._songAuthorEl.innerText = song.author;
-      this._songDurationEl.innerText = song.duration;
-      this._audioEl.src = song.file;
-    }
+  async preparePlayerData(data: Song): Promise<void> {
+    if (!data) return;
+    this._songThumbnailEl.src = data.image;
+    this._songTitleEl.innerText = data.title;
+    this._songAuthorEl.innerText = data.author;
+    this._songDurationEl.innerText = data.duration;
+    this._audioEl.src = data.file;
   }
 
   updateSongProgressUi(): void {
@@ -375,11 +222,10 @@ export class PlayerController {
     return ((this._audioEl.currentTime / this._audioEl.duration) * 100);
   }
 
-  getFormattedSongTime() {
-    let minutes = Functions.toMinutes(this._audioEl.currentTime);
-    let seconds = Functions.toSeconds(minutes, this._audioEl.currentTime);
-    let formatedCurrentTime = `${minutes}:${Functions.padTo2Digits(seconds)}`;
-
+  getFormattedSongTime(): string {
+    const minutes = Functions.toMinutes(this._audioEl.currentTime);
+    const seconds = Functions.toSeconds(minutes, this._audioEl.currentTime);
+    const formatedCurrentTime = `${minutes}:${Functions.padTo2Digits(seconds)}`;
     return formatedCurrentTime;
   }
 
@@ -393,9 +239,7 @@ export class PlayerController {
   }
 
   setPlayerInterval(): void {
-
     this._playerInterval = setInterval(() => {
-
       this.updateSongProgressUi();
     }, 1000);
   }
@@ -407,9 +251,7 @@ export class PlayerController {
     }
   }
 
-
   toggleLoop(value: boolean): void {
-
     if (value) {
       this._audioEl.loop = true;
       this._setLoopBtnEl.classList.add("active");
@@ -435,40 +277,13 @@ export class PlayerController {
   }
 
   changeSongStateIcon(): void {
-
-    if (this.isPaused()) {
-      this._pauseBtnEl.style.display = "none";
-      this._playBtnEl.style.display = "block";
-    } else {
-      this._playBtnEl.style.display = "none";
-      this._pauseBtnEl.style.display = "block";
-    }
-  }
-
-  hasSelectedSong(): boolean {
-    return this.currentSongPlaying ? true : false
+    const paused = this.isPaused();
+    this._playBtnEl.style.display = paused ? "block" : "none";
+    this._pauseBtnEl.style.display = paused ? "none" : "block";
   }
 
   itInLoop() {
     return this._audioEl.loop;
-  }
-
-  getRandomSong(): number {
-
-    let randomSong = Math.floor(
-      Math.random() * this.songsData.length
-    );
-
-    if (randomSong === this.lastRandomSong) {
-      return this.getRandomSong();
-    }
-
-    this.lastRandomSong = randomSong;
-    return this.lastRandomSong;
-  }
-
-  getPlayerVolume(): number {
-    return this._audioEl.volume;
   }
 
   setPlayerVolume(volume: number) {
