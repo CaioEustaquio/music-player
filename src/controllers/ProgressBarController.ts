@@ -4,16 +4,15 @@ export class ProgressBarController {
     private _progressBarEl: HTMLProgressElement,
     private _draggable: boolean = false,
     private _changeValueWhileDrag: boolean = false,
-    private _progressBarWidth: number = 0,
     private _customDragImg: HTMLImageElement = new Image(),
     private _jumpEvent: CustomEvent = new CustomEvent("jump", { detail: {} }),
   ) {
-    this._progressBarEl = _progressBarEl;
-    this._progressBarWidth = Number(_progressBarEl.style.width.replace("px", ""));
-    this._changeValueWhileDrag = _changeValueWhileDrag;
-    this._progressBarEl.setAttribute('draggable', _draggable ? 'true' : 'false');
-    this._customDragImg = new Image();
 
+    this._progressBarEl.setAttribute(
+      'draggable',
+      _draggable ? 'true' : 'false'
+    );
+    this._customDragImg = new Image();
     this.init();
   }
 
@@ -22,13 +21,9 @@ export class ProgressBarController {
   }
 
   addEvents(): void {
-
-    this._progressBarEl.addEventListener("click", (e) => {
-
+    this._progressBarEl.addEventListener("click", (e: MouseEvent) => {
       const progress = this.getCurrentBarValue(e.offsetX);
-
       this._progressBarEl.value = progress;
-
       this._jumpEvent.detail.progress = progress;
       this._progressBarEl.dispatchEvent(this._jumpEvent);
     });
@@ -41,8 +36,7 @@ export class ProgressBarController {
       e.dataTransfer?.setDragImage(this._customDragImg, 0, 0);
     });
 
-    this._progressBarEl.addEventListener("drag", (e) => {
-
+    this._progressBarEl.addEventListener("drag", (e: DragEvent) => {
       const progress = this.getCurrentBarValue(e.offsetX);
       this._progressBarEl.value = progress;
       this._jumpEvent.detail.progress = progress;
@@ -59,15 +53,14 @@ export class ProgressBarController {
   }
 
   getCurrentBarValue(offsetX: number): number {
+    const width = this._progressBarEl
+      .getBoundingClientRect()
+      .width;
 
-    let progress = parseFloat(((offsetX / this._progressBarWidth) * 100).toFixed(2));
-
-    if (progress >= 100) {
-      progress = 100;
-    } else if (progress <= 0) {
-      progress = 0;
-    }
-
+    let progress = parseFloat(
+      ((offsetX / width) * 100).toFixed(2)
+    );
+    progress = Math.min(100, Math.max(0, progress));
     return progress;
   }
 
