@@ -40,13 +40,13 @@ export class PlayerController {
 
     // capturing elements
     this._songTable = new SongTableController();
-    this._playerContainerEl = document.querySelector("#desktop-player-controls") as HTMLElement;
+    this._playerContainerEl = document.querySelector("#player-controls") as HTMLElement;
     this._songThumbnailEl = document.querySelector("img#song-thumbnail") as HTMLImageElement;
     this._songTitleEl = document.querySelector("h2#song-title") as HTMLHeadingElement;
     this._songAuthorEl = document.querySelector("h2#song-author") as HTMLHeadingElement;
     this._songCurrentTimeEl = document.querySelector("p span#current-time") as HTMLParagraphElement;
     this._songDurationEl = document.querySelector("p span#total-time") as HTMLParagraphElement;
-    this._songProgressBarEl = document.querySelector("progress#desktop-progress-bar") as HTMLProgressElement;
+    this._songProgressBarEl = document.querySelector("progress#progress-bar") as HTMLProgressElement;
     this._playBtnEl = document.querySelector("#play-btn") as HTMLButtonElement;
     this._pauseBtnEl = document.querySelector("#pause-btn") as HTMLButtonElement;
     this._skipBackBtnEl = document.querySelector("#skip-back-btn") as HTMLButtonElement;
@@ -54,7 +54,7 @@ export class PlayerController {
     this._setShuffleBtnEl = document.querySelector("button#shuffle-btn") as HTMLButtonElement;
     this._setLoopBtnEl = document.querySelector("button#repeat-btn") as HTMLButtonElement;
     this._audioEl = document.querySelector("#song-audio") as HTMLAudioElement;
-    this._volumeProgressBarEl = document.querySelector("progress#desktop-volume-progress-bar") as HTMLProgressElement;
+    this._volumeProgressBarEl = document.querySelector("progress#volume-progress-bar") as HTMLProgressElement;
     this._volumeBtn = document.querySelector("#volume-button") as HTMLButtonElement;
     this._volumeIcon = this._volumeBtn.querySelector("img") as HTMLImageElement;
 
