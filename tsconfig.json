@@ -32,6 +32,12 @@
       ],
       "@data/*": [
         "src/data/*"
+      ],
+      "@ui/*": [
+        "src/ui/*"
+      ],
+      "@service/*": [
+        "src/service/*"
       ]
     }
   },
