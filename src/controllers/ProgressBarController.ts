@@ -1,76 +1,19 @@
-export class ProgressBarController {
+import { IProgressBar } from "src/interfaces/IProgressBar";
+import { ProgressBarUI } from "@ui/player/ProgressBarUI";
 
-  constructor(
-    private _progressBarEl: HTMLProgressElement,
-    private _draggable: boolean = false,
-    private _changeValueWhileDrag: boolean = false,
-    private _customDragImg: HTMLImageElement = new Image(),
-    private _jumpEvent: CustomEvent = new CustomEvent("jump", { detail: {} }),
-  ) {
+export class ProgressBarController implements IProgressBar {
+  private _progressBarUI: ProgressBarUI;
 
-    this._progressBarEl.setAttribute(
-      'draggable',
-      _draggable ? 'true' : 'false'
-    );
-    this._customDragImg = new Image();
-    this.init();
+  constructor(songProgressBarUI: ProgressBarUI) {
+    this._progressBarUI = songProgressBarUI;
   }
-
-  init() {
-    this.addEvents();
+  public setBarProgress(value: number): void {
+    this._progressBarUI.setProgress(value);
   }
-
-  addEvents(): void {
-    this._progressBarEl.addEventListener("click", (e: MouseEvent) => {
-      const progress = this.getCurrentBarValue(e.offsetX);
-      this._progressBarEl.value = progress;
-      this._jumpEvent.detail.progress = progress;
-      this._progressBarEl.dispatchEvent(this._jumpEvent);
-    });
-
-    this._progressBarEl.addEventListener("dragstart", (e: DragEvent) => {
-      this._progressBarEl.classList.add("dragging");
-      this._customDragImg.src = '';
-
-      // this make the translucent drag image move to not visible area
-      e.dataTransfer?.setDragImage(this._customDragImg, 0, 0);
-    });
-
-    this._progressBarEl.addEventListener("drag", (e: DragEvent) => {
-      const progress = this.getCurrentBarValue(e.offsetX);
-      this._progressBarEl.value = progress;
-      this._jumpEvent.detail.progress = progress;
-
-      if (this._changeValueWhileDrag) {
-        this._progressBarEl.dispatchEvent(this._jumpEvent);
-      }
-    });
-
-    this._progressBarEl.addEventListener("dragend", (e) => {
-      this._progressBarEl.classList.remove("dragging");
-      this._progressBarEl.dispatchEvent(this._jumpEvent);
-    });
+  public setTimeProgress(time: string) {
+    this._progressBarUI.setCurrentDuration(time);
   }
-
-  getCurrentBarValue(offsetX: number): number {
-    const width = this._progressBarEl
-      .getBoundingClientRect()
-      .width;
-
-    let progress = parseFloat(
-      ((offsetX / width) * 100).toFixed(2)
-    );
-    progress = Math.min(100, Math.max(0, progress));
-    return progress;
-  }
-
-  setProgressValue(value: number) {
-    if (!this.itsDragging()) {
-      this._progressBarEl.value = value;
-    }
-  }
-
-  itsDragging(): boolean {
-    return this._progressBarEl.classList.contains("dragging");
+  public setTimeDuration(time: string) {
+    this._progressBarUI.setTotalDuration(time);
   }
 }

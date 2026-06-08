@@ -1,5 +1,23 @@
 [
     {
+        "id": "019e51ba-b7f3-71c0-a7ff-e82b0d8b5790",
+        "title": "Billie Jean",
+        "author": "Michael Jackson",
+        "singer": "Michael Jackson",
+        "duration": "4:54",
+        "image": "/files/thumbnail/thriller-album.jpg",
+        "file": "/files/music/billie-jean.mp3"
+    },
+    {
+        "id": "019e51ba-b7f3-7472-aafc-0d6a667e54a9",
+        "title": "Beat It",
+        "author": "Michael Jackson",
+        "singer": "Michael Jackson",
+        "duration": "4:18",
+        "image": "/files/thumbnail/thriller-album.jpg",
+        "file": "/files/music/beat-it.mp3"
+    },
+    {
         "id": "e3233f9d-f4e9-4985-85db-137863f66a9a",
         "title": "Dramaturgy",
         "author": "Eve",
@@ -49,7 +67,7 @@
         "title": "Feel Good Inc. - Instrumental",
         "author": "Gorillaz",
         "singer": "Gorillaz",
-        "duration": "3:42",
+        "duration": "3:46",
         "image": "/files/thumbnail/feel-good-inc.jpg",
         "file": "/files/music/feel-good-inc-instrumental.mp3"
     },

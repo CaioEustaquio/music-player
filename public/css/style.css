@@ -1,12 +1,11 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     user-select: none;
 }
 
-
-:root{
+:root {
     --background-1: #000000;
     --background-2: #121212;
     --primary-color: #B0B0B0;
@@ -14,30 +13,32 @@
     --main-font: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-h1, h2, p{
+h1,
+h2,
+p {
     font-family: var(--main-font);
 }
 
-a:visited{
+a:visited {
     color: var(--primary-color);
 }
 
-i{
+i {
     color: var(--primary-color);
 }
 
-button{
+button {
     all: unset;
     display: inline-block;
     cursor: pointer;
-} 
+}
 
-main#main{
+main#main {
     display: flex;
     flex-direction: row;
 }
 
-aside#menu-container{
+aside#menu-container {
     top: 0;
     position: sticky;
     width: 20%;
@@ -45,75 +46,77 @@ aside#menu-container{
     background-color: var(--background-2);
 }
 
-aside#menu-container a{
+aside#menu-container a {
     text-decoration: none;
 }
 
-nav#navigation-menu{
+nav#navigation-menu {
     padding: 26px 0 0 12px;
     display: flex;
     flex-direction: column;
     gap: 36px 0;
 }
 
-nav#navigation-menu ul{
+nav#navigation-menu ul {
     display: flex;
     flex-direction: column;
     gap: 10px 0;
     list-style: none;
 }
 
-li.item-menu{
+li.item-menu {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 0 8px;
 }
 
-li.item-menu, li.item-menu a{
+li.item-menu,
+li.item-menu a {
     color: var(--primary-color);
 }
 
-li.item-menu:hover, li.item-menu a:hover{
+li.item-menu:hover,
+li.item-menu a:hover {
     color: var(--secondary-color);
     transition: color 0.5s;
 }
 
-li.item-menu a{
+li.item-menu a {
     font-family: var(--main-font);
     font-size: 26px;
 }
 
-#content-container{
+#content-container {
     width: 80%;
     padding: 44px 22px;
-    background: rgb(0,0,0);
-    background: linear-gradient(0deg, #121212 80%, rgba(72,52,142,1) 97%, rgba(72,52,142,1) 100%);
+    background: rgb(0, 0, 0);
+    background: linear-gradient(0deg, #121212 80%, rgba(72, 52, 142, 1) 97%, rgba(72, 52, 142, 1) 100%);
 }
 
-#section-top{
+#section-top {
     display: flex;
     flex-direction: row;
-    align-items:center;
+    align-items: center;
     justify-content: start;
     gap: 0 16px;
 }
 
-#section-top #liked-songs{
+#section-top #liked-songs {
     height: 200px;
     width: 200px;
 }
 
 #playlist-info h1,
-#playlist-info p{
+#playlist-info p {
     color: var(--secondary-color);
 }
 
-#section-top h1.main-title{
+#section-top h1.main-title {
     font-size: 100px;
 }
 
-#desktop-songs-table{
+#songs-table {
     width: 100%;
     margin-top: 20px;
     font-family: var(--main-font);
@@ -121,77 +124,71 @@ li.item-menu a{
     margin-bottom: 4%;
 }
 
-#desktop-songs-table tr{
+#songs-table tr {
     height: 60px;
     text-align: left;
 }
 
-#desktop-songs-table thead tr{
+#songs-table thead tr {
     color: var(--primary-color);
 }
 
-#desktop-songs-table thead th:nth-child(2),
-#desktop-songs-table thead th:nth-child(3),
-#desktop-songs-table thead th:nth-child(4)
-{
+#songs-table thead th:nth-child(2),
+#songs-table thead th:nth-child(3),
+#songs-table thead th:nth-child(4) {
     width: 28%;
 }
 
-#desktop-songs-table tbody td:nth-child(3),
-#desktop-songs-table tbody td:nth-child(4),
-#desktop-songs-table tbody td:nth-child(5){
+#songs-table tbody td:nth-child(3),
+#songs-table tbody td:nth-child(4),
+#songs-table tbody td:nth-child(5) {
     color: var(--primary-color);
 }
 
-#desktop-songs-table thead tr th:hover{
+#songs-table thead tr th:hover {
     color: var(--secondary-color);
 }
 
-#desktop-songs-table tbody tr{
+#songs-table tbody tr {
     color: var(--secondary-color);
 }
 
-#desktop-songs-table td:nth-child(2) .data-cell,
-#desktop-songs-table td:nth-child(3) .data-cell,
-#desktop-songs-table td:nth-child(4) .data-cell
-{
+#songs-table td:nth-child(2) .data-cell,
+#songs-table td:nth-child(3) .data-cell,
+#songs-table td:nth-child(4) .data-cell {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 220px;
 }
 
-#desktop-songs-table tbody tr.song-playing td:nth-child(1),
-#desktop-songs-table tbody tr.song-playing td:nth-child(2){
+#songs-table tbody tr.song-playing td:nth-child(1),
+#songs-table tbody tr.song-playing td:nth-child(2) {
     color: #27b17c;
 }
 
-#desktop-songs-table tbody tr:hover{
+#songs-table tbody tr:hover {
     background-color: #2A2A2A;
 }
 
-#desktop-songs-table tr{
-    /* text-align:; */
-}
-
-#desktop-player-controls{
+#player-controls {
     bottom: 0;
-    position:fixed;
+    position: fixed;
     width: 100%;
     height: 90px;
     padding: 12px;
     display: none;
     flex-direction: row;
     align-items: center;
-    justify-content:space-between;
+    justify-content: space-between;
     background-color: var(--background-1);
 }
 
-#desktop-player-controls.active{
+#player-controls.active {
     display: flex;
 }
 
-#current-song-info{
+#current-song-info {
     display: flex;
     align-items: center;
     width: 100px;
@@ -201,66 +198,68 @@ li.item-menu a{
     /* overflow: hidden; */
 }
 
-#current-song-info #song-thumbnail{
+#current-song-info #song-thumbnail {
     height: 56px;
     border-radius: 3px;
 }
 
-#current-song-info #song-title{
+#current-song-info #song-title {
     font-size: 14px;
     color: var(--secondary-color);
 }
 
-#current-song-info #song-author{
+#current-song-info #song-author {
     font-size: 12px;
     color: #828282;
 }
 
-#player-primary-controls{
+#player-primary-controls {
     right: 200px;
     display: flex;
     flex-direction: column;
 }
-#player-primary-controls #controls{
+
+#player-primary-controls #controls {
     display: flex;
     flex-direction: row;
     justify-content: center;
     gap: 0 20px;
 }
 
-.icon-button{
+.icon-button {
     color: var(--primary-color);
 }
 
-.icon-button.active{
+.icon-button.active {
     color: #1ED760;
 }
 
-.icon-button.active:hover{
+.icon-button.active:hover {
     color: #1ED760;
 }
 
-.icon-button:hover{
+.icon-button:hover {
     color: var(--secondary-color);
     transition: color 0.3s;
 }
 
-#play-btn, #pause-btn{
+#play-btn,
+#pause-btn {
     display: none;
 }
 
-#progress-bar-container{
+#progress-bar-container {
     display: flex;
     align-items: center;
     gap: 0 10px;
 }
 
-#progress-bar-container p{
+#progress-bar-container p {
     width: 30px;
     color: var(--secondary-color);
 }
 
-#player-secondary-controls{
+#player-secondary-controls {
     display: flex;
     flex-direction: row;
     align-items: center;
