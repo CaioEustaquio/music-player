@@ -89,6 +89,7 @@ export class PlayerController {
       this.setCurrentProgress(e.detail.progress);
     });
     document.addEventListener("volume-progress-jump", (e: CustomEventInit) => {
+      this._volumeBarController.setBarProgress(e.detail.progress);
       this.setPlayerVolume(e.detail.progress);
     });
     document.addEventListener("song-selected", async (): Promise<void> => {
