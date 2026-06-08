@@ -1,18 +1,19 @@
-import { SongProgressBarUI } from "@ui/player/SongProgressBarUI";
+import { IProgressBar } from "src/interfaces/IProgressBar";
+import { ProgressBarUI } from "@ui/player/ProgressBarUI";
 
-export class ProgressBarController {
-  private _songProgressBarUI: SongProgressBarUI;
+export class ProgressBarController implements IProgressBar {
+  private _progressBarUI: ProgressBarUI;
 
-  constructor(songProgressBarUI: SongProgressBarUI) {
-    this._songProgressBarUI = songProgressBarUI;
+  constructor(songProgressBarUI: ProgressBarUI) {
+    this._progressBarUI = songProgressBarUI;
   }
-  public setBarProgress(value: number) {
-    this._songProgressBarUI.setProgress(value);
+  public setBarProgress(value: number): void {
+    this._progressBarUI.setProgress(value);
   }
   public setTimeProgress(time: string) {
-    this._songProgressBarUI.setCurrentDuration(time);
+    this._progressBarUI.setCurrentDuration(time);
   }
   public setTimeDuration(time: string) {
-    this._songProgressBarUI.setTotalDuration(time);
+    this._progressBarUI.setTotalDuration(time);
   }
 }

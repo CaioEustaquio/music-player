@@ -1,6 +1,6 @@
 import { ProgressBarComponent } from "@ui/player/components/ProgressBarComponent";
 
-export class SongProgressBarUI {
+export class ProgressBarUI {
   private _songCurrentTimeEl: HTMLParagraphElement;
   private _songProgressBarEl: HTMLProgressElement;
   private _progressBarComponent: ProgressBarComponent;
@@ -9,7 +9,7 @@ export class SongProgressBarUI {
     this._songCurrentTimeEl = document.querySelector("p span#current-time") as HTMLParagraphElement;
     this._songProgressBarEl = document.querySelector("progress#progress-bar") as HTMLProgressElement;
     this._songDurationEl = document.querySelector("p span#total-time") as HTMLParagraphElement;
-    this._progressBarComponent = new ProgressBarComponent(this._songProgressBarEl, true);
+    this._progressBarComponent = new ProgressBarComponent(this._songProgressBarEl, "song-progress-jump", true);
   }
   public setCurrentDuration(time: string): void {
     this._songCurrentTimeEl.innerText = time;

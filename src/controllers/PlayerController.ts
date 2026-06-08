@@ -7,14 +7,15 @@ import { SongTableController } from "@controllers/SongTableController";
 import { ProgressBarController } from "@controllers/ProgressBarController";
 import { SongTableUI } from "@ui/player/SongTableUI";
 import { SongPlayerUI } from "@ui/player/SongPlayerUI";
-import { SongProgressBarUI } from "@ui/player/SongProgressBarUI";
+import { ProgressBarUI } from "@ui/player/ProgressBarUI";
+import { VolumeBarController } from "./VolumeBarController";
+import { VolumeBarUI } from "@ui/player/VolumeBarUI";
 
 export class PlayerController {
   private _songPlayerUI: SongPlayerUI;
   private _songTableController: SongTableController;
   private _progressBarController: ProgressBarController;
-  private _songCurrentTimeEl: HTMLParagraphElement;
-  private _songProgressBarEl: HTMLProgressElement;
+  private _volumeBarController: VolumeBarController;
   private _audioEl: HTMLAudioElement;
   private _currentSongPlayingId: string;
   private _playerInterval: ReturnType<typeof setInterval> | null = null;
@@ -27,22 +28,18 @@ export class PlayerController {
   constructor(
     songTableUI: SongTableUI,
     songPlayerUI: SongPlayerUI,
-    songProgressBarUI: SongProgressBarUI
+    progressBarUI: ProgressBarUI,
+    volumeBarUI: VolumeBarUI,
   ) {
     // ui
     this._songPlayerUI = songPlayerUI;
     // capturing elements
     this._songTableController = new SongTableController(songTableUI);
-    this._songCurrentTimeEl = document.querySelector("p span#current-time") as HTMLParagraphElement;
-    this._songProgressBarEl = document.querySelector("progress#progress-bar") as HTMLProgressElement;
     this._audioEl = document.querySelector("#song-audio") as HTMLAudioElement;
-
-
     this._currentSongPlayingId = "";
     this._songPlayerInShuffle = false;
-    this._progressBarController = new ProgressBarController(songProgressBarUI);
-    // this._mainVolumeProgressBar = new ProgressBarController(this._volumeProgressBarEl, true, true);
-
+    this._progressBarController = new ProgressBarController(progressBarUI);
+    this._volumeBarController = new VolumeBarController(volumeBarUI);
     this._shuffleChangeEvent = new Event("shuffle-change");
     this._loopChangeEvent = new Event("loop-change");
 
@@ -63,7 +60,7 @@ export class PlayerController {
   async init(): Promise<void> {
     document.body.addEventListener('dragover', (e: MouseEvent) => e.preventDefault());
     this.addPlayerEvents();
-    // this.addKeyboardEvents();
+    this.addKeyboardEvents();
   }
 
   addPlayerEvents() {
@@ -88,18 +85,18 @@ export class PlayerController {
     this._audioEl.addEventListener("ended", async (): Promise<void> => {
       await this.skipForward();
     });
-    this._songProgressBarEl.addEventListener("jump", (e: CustomEventInit) => this.setCurrentProgress(e.detail.progress));
-    //   this._volumeProgressBarEl.addEventListener("jump", (e: CustomEventInit) => {
-    //     this.updateVolumeImage(e.detail.progress);
-    //     this.setPlayerVolume(e.detail.progress);
-    //   });
+    document.addEventListener("song-progress-jump", (e: CustomEventInit) => {
+      this.setCurrentProgress(e.detail.progress);
+    });
+    document.addEventListener("volume-progress-jump", (e: CustomEventInit) => {
+      this.setPlayerVolume(e.detail.progress);
+    });
     document.addEventListener("song-selected", async (): Promise<void> => {
       const data = await this._songTableController.getSelectedSongData();
       if (!data) return;
       this._songPlayerUI.setPlayerData(data);
       this._currentSongPlayingId = data.id;
       this._audioEl.src = data.file;
-      console.log(data.duration)
       this._progressBarController.setTimeDuration(data.duration)
       this.play();
     })
@@ -119,23 +116,25 @@ export class PlayerController {
       }
       this.setPlayerInLoop(false);
     });
-    document.addEventListener("player-controls-backward", async (): Promise<void> => await this.skipBackward());
-    document.addEventListener("player-controls-forward", async (): Promise<void> => await this.skipForward())
+    document.addEventListener("player-controls-backward", async (): Promise<void> => {
+      await this.skipBackward()
+    });
+    document.addEventListener("player-controls-forward", async (): Promise<void> => {
+      await this.skipForward()
+    })
   }
 
-  // addKeyboardEvents() {
-  //   document.addEventListener("keypress", (e: KeyboardEvent) => {
-  //     e.preventDefault();
-  //     switch (e.code) {
-  //       case ("Space"):
-  //         console.log("Aqui")
-  //         if (this.songTable.selectedRowEl) this.isPaused() ? this.play() : this.pause();
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //   });
-  // }
+  addKeyboardEvents() {
+    document.addEventListener("keypress", (e: KeyboardEvent) => {
+      e.preventDefault();
+      console.log("Aqui")
+      if (e.code === "Space") {
+        if (this._songTableController.rowSelected()) {
+          this._audioEl.paused ? this.play() : this.pause();
+        }
+      }
+    });
+  }
 
   play(): void {
     try {
